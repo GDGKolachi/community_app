@@ -7,9 +7,11 @@ class SprungBox extends StatefulWidget {
   final Damped damped;
   final Duration duration;
   final BoolCallback callback;
+  final String assetImageName;
 
   SprungBox({
     this.damped = Damped.critically,
+    @required this.assetImageName,
     this.callback,
     duration,
   }) : this.duration = duration ?? Duration(milliseconds: 3500);
@@ -66,7 +68,7 @@ class _SprungBoxState extends State<SprungBox>
               height: 250.0,
               width: 250.0,
               child: Image(
-                image: AssetImage('assets/flutterKarachi.png'),
+                image: AssetImage(widget.assetImageName),
               ),
             ),
           ),

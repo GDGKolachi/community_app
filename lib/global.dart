@@ -6,6 +6,12 @@ import 'package:flutter_pk/caches/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+abstract class SplashScreenConfig {
+  static const String logoAssetName = 'assets/gdg_kolachi.png';
+  static const Color backgroundColor = Colors.white;
+}
+
 abstract class Routes {
   static const String home_master = '/home_master';
   static const String main = '/main';

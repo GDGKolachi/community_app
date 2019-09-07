@@ -11,7 +11,11 @@ import '../widgets/full_screen_loader.dart';
 import '../widgets/sprung_box.dart';
 
 class OnboardingPage extends StatefulWidget {
-  OnboardingPage({Key key, this.title}) : super(key: key);
+  OnboardingPage({
+    Key key,
+    this.title,
+  }) : super(key: key);
+
   final String title;
 
   @override
@@ -28,14 +32,50 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     api.initialize();
-
     preferences = SharedPreferencesHandler();
-
     _getSharedPreferences();
+  }
+
+  void _getSharedPreferences() async {
+    setState(() => _isFetchingSharedPreferences = true);
+    try {
+      var userId =
+          await preferences.getValue(SharedPreferencesKeys.firebaseUserId);
+      if (userId != null) {
+        await userCache.getUser(userId);
+        await Navigator.of(context).pushNamedAndRemoveUntil(
+          Routes.home_master,
+          ModalRoute.withName(Routes.main),
+        );
+      }
+    } catch (ex) {
+      print(ex);
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Oops!",
+        desc: "An error has occurred",
+        buttons: [
+          DialogButton(
+            child: Text("Dismiss",
+                style: Theme.of(context).textTheme.title.copyWith(
+                      color: Colors.white,
+                    )),
+            color: Colors.red,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ).show();
+    } finally {
+      setState(() {
+        _isFetchingSharedPreferences = false;
+        _showSwipeText = true;
+      });
+    }
   }
 
   @override
@@ -43,6 +83,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Stack(
       children: <Widget>[
         Scaffold(
+          backgroundColor: SplashScreenConfig.backgroundColor,
           body: _buildBody(context),
         ),
         _isLoading ? FullScreenLoader() : Container()
@@ -58,19 +99,41 @@ class _OnboardingPageState extends State<OnboardingPage> {
         physics: _isFetchingSharedPreferences
             ? NeverScrollableScrollPhysics()
             : ScrollPhysics(),
-        pagination: _isFetchingSharedPreferences
-            ? SwiperPagination()
-            : new SwiperPagination(
-                margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
-                builder: new DotSwiperPaginationBuilder(
-                    color: Theme.of(context).hintColor,
-                    activeColor: Theme.of(context).primaryColor,
-                    size: 10.0,
-                    activeSize: 15.0),
-              ),
         children: <Widget>[
           _buildFirstSwiperControlPage(context),
           _buildSecondSwiperControlPage(context),
+        ],
+      ),
+    );
+  }
+
+  Center _buildFirstSwiperControlPage(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          SprungBox(
+            damped: Damped.critically,
+            assetImageName: SplashScreenConfig.logoAssetName,
+            callback: (bool value) {},
+          ),
+          AnimatedCrossFade(
+            crossFadeState: _showSwipeText
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            duration: Duration(milliseconds: 800),
+            firstChild: Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: Text('Swipe left to proceed'),
+            ),
+            secondChild: Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: Text(
+                'Please wait ...',
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -81,14 +144,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 64.0, right: 64.0),
-            child: _isLoading
-                ? Container()
-                : Image(
-                    image: AssetImage('assets/loader.png'),
-                  ),
-          ),
+          if (!_isLoading)
+            Padding(
+              padding: const EdgeInsets.only(left: 64.0, right: 64.0),
+              child: Image(image: AssetImage(SplashScreenConfig.logoAssetName)),
+            ),
           Column(
             children: <Widget>[
               Text(
@@ -111,45 +171,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Text('Get started'),
                 ),
               )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Center _buildFirstSwiperControlPage(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          SprungBox(
-            damped: Damped.critically,
-            callback: (bool value) {},
-          ),
-          Column(
-            children: <Widget>[
-              Text(
-                'Welcome to Flutter Pakistan',
-                style: Theme.of(context).textTheme.title,
-              ),
-              AnimatedCrossFade(
-                crossFadeState: _showSwipeText
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: Duration(milliseconds: 800),
-                firstChild: Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
-                  child: Text('Swipe left to proceed'),
-                ),
-                secondChild: Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
-                  child: Text(
-                    'Please wait ...',
-                  ),
-                ),
-              ),
             ],
           ),
         ],
@@ -204,46 +225,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ).show();
     } finally {
       setState(() => _isLoading = false);
-    }
-  }
-
-  void _getSharedPreferences() async {
-    setState(() => _isFetchingSharedPreferences = true);
-    try {
-      var userId = await preferences.getValue(
-          SharedPreferencesKeys.firebaseUserId);
-      if (userId != null) {
-        await userCache.getUser(userId);
-        await Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home_master,
-          ModalRoute.withName(Routes.main),
-        );
-      }
-    } catch (ex) {
-      print(ex);
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Oops!",
-        desc: "An error has occurred",
-        buttons: [
-          DialogButton(
-            child: Text("Dismiss",
-                style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white,
-                    )),
-            color: Colors.red,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ).show();
-    } finally {
-      setState(() {
-        _isFetchingSharedPreferences = false;
-        _showSwipeText = true;
-      });
     }
   }
 }

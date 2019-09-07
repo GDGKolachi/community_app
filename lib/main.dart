@@ -17,7 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Pakistan',
       theme: theme,
-      home: OnboardingPage(title: 'Flutter Pakistan'),
+      home: OnboardingPage(
+        title: 'Flutter Pakistan',
+      ),
       routes: {
         Routes.home_master: (context) => new HomePageMaster(),
         Routes.main: (context) => OnboardingPage()
