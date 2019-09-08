@@ -22,18 +22,16 @@ class LoginApi {
     CollectionReference reference =
         Firestore.instance.collection(FireStoreKeys.userCollection);
 
-    await reference.document(user.uid).get().then((snap) async {
-      if (!snap.exists) {
-        User _user = User(
-            name: user.displayName,
-            mobileNumber: user.phoneNumber,
-            id: user.uid,
-            photoUrl: user.photoUrl,
-            email: user.email);
-
-        await reference.document(user.uid).setData(_user.toJson(), merge: true);
-      }
-    });
+    var snapshot = await reference.document(user.uid).get();
+    if (!snapshot.exists) {
+      var appUser = User(
+          name: user.displayName,
+          mobileNumber: user.phoneNumber,
+          id: user.uid,
+          photoUrl: user.photoUrl,
+          email: user.email);
+      await reference.document(user.uid).setData(appUser.toJson(), merge: true);
+    }
   }
 
   Future<GoogleSignInAuthentication> _handleGoogleSignIn() async {

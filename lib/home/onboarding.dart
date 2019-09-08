@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/helpers/shared_preferences.dart';
 import 'package:flutter_pk/home/login.dart';
+import 'package:flutter_pk/registration/registration.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sprung/sprung.dart';
@@ -186,23 +188,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
     try {
       String userId = await api.initiateLogin();
-      await preferences.setPreference(
-          SharedPreferencesKeys.firebaseUserId, userId);
       await userCache.getUser(userId);
 
-      if (!userCache.user.isContributor) {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => FullScreenContributionDialog(),
-            fullscreenDialog: true,
-          ),
-        );
-      }
-
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        Routes.home_master,
-        ModalRoute.withName(Routes.main),
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => RegistrationPage(),
+          fullscreenDialog: true,
+        ),
       );
+
+      // Navigator.of(context).pushNamedAndRemoveUntil(
+      //   Routes.home_master,
+      //   ModalRoute.withName(Routes.main),
+      // );
     } catch (ex) {
       print(ex);
       Alert(

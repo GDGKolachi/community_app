@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/regex-helpers.dart';
+import 'package:flutter_pk/helpers/shared_preferences.dart';
 import 'package:flutter_pk/widgets/dots_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_pk/widgets/full_screen_loader.dart';
@@ -15,30 +17,30 @@ class RegistrationPage extends StatefulWidget {
 
 class RegistrationPageState extends State<RegistrationPage> {
   PageController controller = PageController();
-  final GlobalKey<FormState> _mobileNumberFormKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _contactFormKey = new GlobalKey<FormState>();
   final GlobalKey<FormState> _studentProfessionalFormKey =
       new GlobalKey<FormState>();
   final GlobalKey<FormState> _designationFormKey = new GlobalKey<FormState>();
   FocusNode focusNode = FocusNode();
+  TextEditingController nameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController designationController = TextEditingController();
   TextEditingController studentProfessionalController = TextEditingController();
   int pageViewItemCount = 3;
   bool _isStudent = false;
   bool _isLoading = false;
+  User user = userCache.user;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    mobileNumberController.text = userCache.user.mobileNumber == null
-        ? '+92'
-        : userCache.user.mobileNumber;
+    nameController.text = user.name;
+    mobileNumberController.text =
+        user.mobileNumber == null ? '+92' : user.mobileNumber;
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Stack(
       children: <Widget>[
         Scaffold(
@@ -65,15 +67,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                   child: PageView(
                     controller: controller,
                     children: <Widget>[
-                      userCache.user.mobileNumber == null
-                          ? _buildNumberSetupView(
-                              context,
-                              GlobalConstants.addNumberDisplayText,
-                            )
-                          : _buildNumberSetupView(
-                              context,
-                              GlobalConstants.editNumberDisplayText,
-                            ),
+                      _buildContactSetupView(context),
                       _buildStudentProfessionalView(),
                       _buildWorkInstituteEntryView(),
                       _buildDesignationEntryView()
@@ -97,85 +91,94 @@ class RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  Widget _buildNumberSetupView(BuildContext context, String displayText) {
+  Widget _buildContactSetupView(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 128.0, right: 128.0),
-              child: Center(
-                child: Image(
-                  image: AssetImage('assets/ic_phone_setup.png'),
-                  color: Theme.of(context).primaryColor,
-                  width: 120,
+        child: Form(
+          key: _contactFormKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                child: user.photoUrl == null
+                    ? Text(
+                        user.name.substring(0, 1),
+                        style: TextStyle(fontSize: 72),
+                      )
+                    : Container(),
+                backgroundImage: NetworkImage(user.photoUrl),
+                radius: 60,
+              ),
+              SizedBox(height: 32),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: TextFormField(
+                  controller: nameController,
+                  maxLength: 100,
+                  validator: _validateName,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your name',
+                    labelText: 'Name',
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 16.0,
-                bottom: 16.0,
-                left: 32.0,
-                right: 32.0,
-              ),
-              child: Text(
-                displayText,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subhead,
-              ),
-            ),
-            Form(
-              key: _mobileNumberFormKey,
-              child: ListTile(
-                title: TextFormField(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextFormField(
                   focusNode: focusNode,
                   controller: mobileNumberController,
                   maxLength: GlobalConstants.phoneNumberMaxLength,
-                  validator: (value) => _validatePhoneNumber(value),
+                  validator: _validatePhoneNumber,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      hintText: 'Enter mobile number',
-                      labelText: 'Mobile number'),
+                    hintText: 'Enter mobile number',
+                    labelText: 'Mobile number',
+                  ),
                 ),
               ),
-            ),
-            Divider(),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: FlatButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text('NEXT'),
-                        Icon(
-                          Icons.arrow_forward,
-                          size: 24.0,
-                        )
-                      ],
-                    ),
-                    textColor: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      if (_mobileNumberFormKey.currentState.validate()) {
-                        focusNode.unfocus();
-                        controller.animateToPage(1,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn);
-                      }
-                    },
-                  ),
-                )
-              ],
-            )
-          ],
+              Divider(),
+              FlatButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text('NEXT'),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 24.0,
+                    )
+                  ],
+                ),
+                textColor: Theme.of(context).primaryColor,
+                onPressed: () {
+                  if (_contactFormKey.currentState.validate()) {
+                    focusNode.unfocus();
+                    controller.animateToPage(1,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.fastOutSlowIn);
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  String _validateName(String name) {
+    return name.length == 0 ? 'Name is required' : null;
+  }
+
+  String _validatePhoneNumber(String number) {
+    if (number.isEmpty) return 'Phone number required';
+    if (number.length < GlobalConstants.phoneNumberMaxLength ||
+        !RegexHelpers.phoneNumberRegex.hasMatch(number))
+      return 'You wouldn\'t want to miss any important update! \nPlease enter a valid mobile number';
+
+    return null;
   }
 
   Center _buildStudentProfessionalView() {
@@ -366,12 +369,12 @@ class RegistrationPageState extends State<RegistrationPage> {
                       if (_studentProfessionalFormKey.currentState.validate()) {
                         if (_isStudent) {
                           await _submitDataToFirestore();
+
                           Alert(
                             context: context,
                             type: AlertType.success,
                             title: "Success!",
-                            desc:
-                                "Your are registered successfully!\nYou will receive a confirmation message soon!",
+                            desc: "Your are registered successfully!",
                             buttons: [
                               DialogButton(
                                 child: Text("COOL!",
@@ -383,7 +386,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                                         )),
                                 onPressed: () {
                                   Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
+                                  Navigator.pushReplacementNamed(
+                                      context, Routes.home_master);
                                 },
                               )
                             ],
@@ -491,8 +495,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                           context: context,
                           type: AlertType.success,
                           title: "Success!",
-                          desc:
-                              "Your are registered successfully!\nYou will receive a confirmation message soon!",
+                          desc: "Your are registered successfully!",
                           buttons: [
                             DialogButton(
                               child: Text("COOL!",
@@ -504,7 +507,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                                       )),
                               onPressed: () {
                                 Navigator.of(context).pop();
-                                Navigator.of(context).pop();
+                                Navigator.pushReplacementNamed(
+                                    context, Routes.home_master);
                               },
                             )
                           ],
@@ -521,15 +525,10 @@ class RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  String _validatePhoneNumber(String number) {
-    if (number.isEmpty) return 'Phone number required';
-    if (number.length < GlobalConstants.phoneNumberMaxLength ||
-        !RegexHelpers.phoneNumberRegex.hasMatch(number))
-      return 'You wouldn\'t want to miss any important update! \nPlease enter a valid mobile number';
-  }
-
   String _validateDesignation(String number) {
     if (number.isEmpty) return 'Designation required';
+
+    return null;
   }
 
   String _validateStudentProfessionalEntry(String number) {
@@ -542,7 +541,7 @@ class RegistrationPageState extends State<RegistrationPage> {
     setState(() => _isLoading = true);
     try {
       Firestore.instance.runTransaction((transaction) async {
-        await transaction.update(userCache.user.reference, {
+        await transaction.update(user.reference, {
           'registration': Registration(
             occupation: _isStudent ? 'Student' : 'Professional',
             workOrInstitute: studentProfessionalController.text,
@@ -553,7 +552,9 @@ class RegistrationPageState extends State<RegistrationPage> {
         });
       });
 
-      await userCache.getUser(userCache.user.id, useCached: false);
+      await userCache.getUser(user.id, useCached: false);
+      await SharedPreferencesHandler()
+          .setPreference(SharedPreferencesKeys.firebaseUserId, user.id);
     } catch (ex) {
       print(ex);
       Alert(
