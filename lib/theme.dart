@@ -33,12 +33,16 @@ ThemeData _buildTheme() {
       brightness: Brightness.light,
       iconTheme: base.iconTheme.copyWith(color: Colors.black),
       color: Colors.white,
-      textTheme: base.primaryTextTheme.copyWith(
-        title: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 20,
-        )
-      ).apply(bodyColor: Colors.black),
+      textTheme: base.primaryTextTheme
+          .copyWith(
+              title: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+          ))
+          .apply(bodyColor: Colors.black),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
     ),
     buttonTheme: base.buttonTheme.copyWith(
       buttonColor: kBlue,
