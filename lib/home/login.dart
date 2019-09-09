@@ -8,10 +8,12 @@ class LoginApi {
   Future<String> initiateLogin() async {
     GoogleSignInAuthentication googleAuth = await _handleGoogleSignIn();
 
-    FirebaseUser user = await auth.signInWithGoogle(
+    var credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+
+    var user = (await auth.signInWithCredential(credential)).user;
 
     await _setUserToFireStore(user);
 
