@@ -15,12 +15,11 @@ class FullScreenProfileDialog extends StatefulWidget {
 }
 
 class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
-  User _user = new User();
+  User _user;
   SharedPreferencesHandler preferences;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     preferences = SharedPreferencesHandler();
     _setUser();
@@ -34,7 +33,7 @@ class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             _buildCustomAppBarSpace(context),
-            _buildBody(),
+            if (_user != null) _buildBody(),
           ],
         ),
       ),
@@ -108,16 +107,9 @@ class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              Container(
-                height: 70.0,
-                width: 70.0,
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(_user.photoUrl),
-                  ),
-                ),
+              CircleAvatar(
+                backgroundImage: NetworkImage(_user.photoUrl),
+                radius: 60,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
