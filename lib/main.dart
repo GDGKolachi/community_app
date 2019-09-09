@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/home/onboarding.dart';
-import 'package:flutter_pk/home/home_master.dart';
 import 'package:flutter_pk/theme.dart';
+
+import 'home/home_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Pakistan',
       ),
       routes: {
-        Routes.home_master: (context) => new HomePageMaster(),
+        Routes.home_master: (context) => new HomePage(),
         Routes.main: (context) => OnboardingPage()
       },
     );
