@@ -29,17 +29,18 @@ ThemeData _buildTheme() {
     accentColor: kBlue,
     canvasColor: Colors.white,
     scaffoldBackgroundColor: Colors.white,
-    appBarTheme: AppBarTheme(
+    appBarTheme: base.appBarTheme.copyWith(
       brightness: Brightness.light,
       iconTheme: base.iconTheme.copyWith(color: Colors.black),
       color: Colors.white,
-      textTheme: base.primaryTextTheme
-          .copyWith(
-              title: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
-          ))
-          .apply(bodyColor: Colors.black),
+      textTheme: base.primaryTextTheme.copyWith(
+        title: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 20,
+        ).apply(
+          color: Colors.black,
+        ),
+      ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),

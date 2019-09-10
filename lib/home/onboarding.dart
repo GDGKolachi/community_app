@@ -48,7 +48,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       if (userId != null) {
         await userCache.getUser(userId);
         await Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home_master,
+          Routes.home,
           ModalRoute.withName(Routes.main),
         );
       }

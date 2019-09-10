@@ -67,7 +67,7 @@ class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
                   userCache.clear();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     Routes.main,
-                    ModalRoute.withName(Routes.home_master),
+                    ModalRoute.withName(Routes.home),
                   );
                 } catch (ex) {
                   print(ex);

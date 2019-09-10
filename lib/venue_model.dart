@@ -2,20 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
 
 class EventDetails {
-  final String date;
+  final DateTime date;
   final String eventTitle;
   final Venue venue;
   final DocumentReference reference;
+  final String bannerUrl;
 
-  EventDetails({this.date, this.eventTitle, this.venue, this.reference});
+  EventDetails({
+    this.eventTitle,
+    this.venue,
+    this.reference,
+    this.date,
+    this.bannerUrl,
+  });
+
+  String get formattedDate => formatDate(
+          this.date,
+          DateFormats.shortUiDateFormat,
+        );
 
   EventDetails.fromMap(Map<String, dynamic> map, {this.reference})
       : eventTitle = map['eventTitle'],
-        date = formatDate(
-          map['date'],
-          DateFormats.shortUiDateFormat,
-        ),
+        date = (map['date'] as Timestamp).toDate(),
+        bannerUrl = 'https://images.pexels.com/photos/2342400/pexels-photo-2342400.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         venue = Venue.fromMap(map['venue']);
+
   EventDetails.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 }
@@ -37,7 +48,7 @@ class Venue {
     this.reference,
   });
 
-  Venue.fromMap(Map<String, dynamic> map, {this.reference})
+  Venue.fromMap(Map map, {this.reference})
       : title = map['title'],
         address = map['address'],
         city = map['city'],
@@ -59,7 +70,7 @@ class Location {
     this.reference,
   });
 
-  Location.fromMap(Map<String, dynamic> map, {this.reference})
+  Location.fromMap(Map map, {this.reference})
       : latitude = map['latitude'],
         longitude = map['longitude'];
 

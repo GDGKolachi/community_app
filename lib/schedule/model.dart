@@ -5,7 +5,7 @@ import 'package:flutter_pk/util.dart';
 class ScheduleApi {
   Future<List<Session>> getSessionList() async {
     var date = await Firestore.instance
-        .collection(FireStoreKeys.dateCollection)
+        .collection(FireStoreKeys.eventCollection)
         .snapshots()
         .first;
 

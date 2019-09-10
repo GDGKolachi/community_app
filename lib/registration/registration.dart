@@ -387,7 +387,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   Navigator.pushReplacementNamed(
-                                      context, Routes.home_master);
+                                      context, Routes.home);
                                 },
                               )
                             ],
@@ -508,7 +508,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                               onPressed: () {
                                 Navigator.of(context).pop();
                                 Navigator.pushReplacementNamed(
-                                    context, Routes.home_master);
+                                    context, Routes.home);
                               },
                             )
                           ],

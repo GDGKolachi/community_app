@@ -13,7 +13,7 @@ abstract class SplashScreenConfig {
 }
 
 abstract class Routes {
-  static const String home_master = '/home_master';
+  static const String home = '/home_master';
   static const String main = '/main';
 }
 
@@ -34,7 +34,7 @@ abstract class SharedPreferencesKeys {
 
 abstract class FireStoreKeys {
   static const String userCollection = 'users';
-  static const String dateCollection = 'dates';
+  static const String eventCollection = 'dates';
   static const String sessionCollection = 'sessions';
   static const String speakerCollection = 'speakers';
   static const String attendanceCollection = 'attendance';

@@ -116,7 +116,7 @@ class VenueDetailPageState extends State<VenueDetailPage> {
     });
     EventDetails _eventDetails = new EventDetails();
     var eventDetails = Firestore.instance
-        .collection(FireStoreKeys.dateCollection)
+        .collection(FireStoreKeys.eventCollection)
         .snapshots()
         .first;
     eventDetails.then((onValue) {

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Pakistan',
       ),
       routes: {
-        Routes.home_master: (context) => new HomePage(),
+        Routes.home: (context) => new HomePage(),
         Routes.main: (context) => OnboardingPage()
       },
     );

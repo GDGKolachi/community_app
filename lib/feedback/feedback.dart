@@ -178,7 +178,7 @@ class FullScreenFeedbackDialogState extends State<FullScreenFeedbackDialog> {
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.of(context).popUntil(
-                ModalRoute.withName(Routes.home_master),
+                ModalRoute.withName(Routes.home),
               );
             },
           )
