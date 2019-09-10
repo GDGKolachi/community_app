@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/profile/profile_dialog.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,8 +9,10 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CircleAvatar(),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(userCache.user.photoUrl, ),
+            ),
           ),
         ],
       ),
