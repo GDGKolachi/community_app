@@ -1,5 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+
+class EventApi {
+  Stream<List<EventDetails>> get events => Firestore.instance
+        .collection(FireStoreKeys.eventCollection)
+        .where('date', isGreaterThanOrEqualTo: DateTime.now().add(Duration(days: -1)))
+        .orderBy('date')
+        .snapshots()
+        .asyncMap<List<EventDetails>>((snapshot) => snapshot.documents
+            .map((doc) => EventDetails.fromSnapshot(doc))
+            .toList());
+}
 
 class EventDetails {
   final DateTime date;
@@ -17,9 +29,9 @@ class EventDetails {
   });
 
   String get formattedDate => formatDate(
-          this.date,
-          DateFormats.shortUiDateFormat,
-        );
+        this.date,
+        DateFormats.shortUiDateFormat,
+      );
 
   EventDetails.fromMap(Map<String, dynamic> map, {this.reference})
       : eventTitle = map['eventTitle'],

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/events/event_detail_container.dart';
 import 'package:flutter_pk/events/model.dart';
@@ -7,6 +6,8 @@ import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/profile/profile_dialog.dart';
 
 class EventListingPage extends StatelessWidget {
+  final EventApi api = new EventApi();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +27,8 @@ class EventListingPage extends StatelessWidget {
       drawer: Drawer(
         child: NavigationDrawerItems(),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance
-            .collection(FireStoreKeys.eventCollection)
-            .snapshots(),
+      body: StreamBuilder<List<EventDetails>>(
+        stream: api.events,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -37,11 +36,7 @@ class EventListingPage extends StatelessWidget {
             );
           }
 
-          var events = snapshot.data.documents
-              .map((doc) {
-                return EventDetails.fromSnapshot(doc);
-              })
-              .toList();
+          var events = snapshot.data;
           return ListView.builder(
             itemCount: events.length,
             itemBuilder: (_, index) => EventListItem(events[index]),
@@ -63,7 +58,6 @@ class EventListItem extends StatelessWidget {
     var eventLocationStyle = Theme.of(context).accentTextTheme.subtitle;
     var eventDateStyle =
         Theme.of(context).textTheme.title.copyWith(color: Colors.black45);
-    var capsuleTextStyle = Theme.of(context).accentTextTheme.overline;
     var space = SizedBox(height: 8);
 
     return ListTile(
@@ -89,7 +83,7 @@ class EventListItem extends StatelessWidget {
             ),
           ),
           padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 8),
+              const EdgeInsets.only(left: 16, right: 16, top: 56, bottom: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -103,13 +97,10 @@ class EventListItem extends StatelessWidget {
                 style: eventLocationStyle,
               ),
               space,
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                child: Text('REGISTERED', style: capsuleTextStyle),
+              RaisedButton(
+                child: Text('REGISTER'),
+                shape: StadiumBorder(),
+                onPressed: () {},
               ),
             ],
           ),
