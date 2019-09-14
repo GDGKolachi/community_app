@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pk/caches/user.dart';
+import 'package:flutter_pk/events/login.dart';
+import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/shared_preferences.dart';
-import 'package:flutter_pk/home/login.dart';
 import 'package:flutter_pk/registration/registration.dart';
+import 'package:flutter_pk/widgets/full_screen_loader.dart';
+import 'package:flutter_pk/widgets/sprung_box.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sprung/sprung.dart';
-
-import '../contribution/contribution_dialog.dart';
-import '../global.dart';
-import '../widgets/full_screen_loader.dart';
-import '../widgets/sprung_box.dart';
 
 class OnboardingPage extends StatefulWidget {
   OnboardingPage({

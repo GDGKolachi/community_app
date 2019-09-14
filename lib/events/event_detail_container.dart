@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pk/caches/user.dart';
-import 'package:flutter_pk/venue_detail.dart';
+import 'package:flutter_pk/events/venue_detail.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_pk/registration/registration.dart';
@@ -13,14 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_pk/schedule/schedule_page.dart';
 
-class HomePageMaster extends StatefulWidget {
+class EventDetailContainer extends StatefulWidget {
   @override
-  HomePageMasterState createState() {
-    return new HomePageMasterState();
+  EventDetailContainerState createState() {
+    return new EventDetailContainerState();
   }
 }
 
-class HomePageMasterState extends State<HomePageMaster> {
+class EventDetailContainerState extends State<EventDetailContainer> {
   int _selectedIndex = 0;
   String floatingButtonLabel = 'Register';
   IconData floatingButtonIcon = Icons.group_work;

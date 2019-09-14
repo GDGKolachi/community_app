@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pk/events/event_detail_container.dart';
+import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
-import 'package:flutter_pk/home/home_master.dart';
 import 'package:flutter_pk/profile/profile_dialog.dart';
-import 'package:flutter_pk/venue_model.dart';
 
-class HomePage extends StatelessWidget {
+class EventListingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +70,7 @@ class EventListItem extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => HomePageMaster(),
+          builder: (_) => EventDetailContainer(),
         ),
       ),
       leading: Text(

@@ -24,7 +24,7 @@ class EventDetails {
   EventDetails.fromMap(Map<String, dynamic> map, {this.reference})
       : eventTitle = map['eventTitle'],
         date = (map['date'] as Timestamp).toDate(),
-        bannerUrl = 'https://images.pexels.com/photos/2342400/pexels-photo-2342400.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+        bannerUrl = map['bannerUrl'],
         venue = Venue.fromMap(map['venue']);
 
   EventDetails.fromSnapshot(DocumentSnapshot snapshot)
