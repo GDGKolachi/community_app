@@ -97,15 +97,36 @@ class EventListItem extends StatelessWidget {
                 style: eventLocationStyle,
               ),
               space,
-              RaisedButton(
-                child: Text('REGISTER'),
-                shape: StadiumBorder(),
-                onPressed: () {},
-              ),
+              RegistrationAction(event.registrationStatus),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class RegistrationAction extends StatelessWidget {
+  static Map<String, String> _buttonTextMap = {
+    RegistrationStates.undefined: 'REGISTER',
+    RegistrationStates.registered: 'SHORTLISTING PENDING',
+    RegistrationStates.shortlisted: 'CONFIRM REGISTRATION',
+    RegistrationStates.cancelled: 'RE-APPLY',
+    RegistrationStates.confirmed: 'VIEW EVENT',
+  };
+  final String _text;
+  final VoidCallback _onTap = () {};
+
+  RegistrationAction(String registrationStatus)
+      : _text = _buttonTextMap[registrationStatus];
+       
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      child: Text(_text),
+      shape: StadiumBorder(),
+      onPressed: _onTap,
     );
   }
 }

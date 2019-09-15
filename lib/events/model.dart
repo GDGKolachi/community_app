@@ -1,16 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/registration/registration.dart';
 
 class EventApi {
   Stream<List<EventDetails>> get events => Firestore.instance
-        .collection(FireStoreKeys.eventCollection)
-        .where('date', isGreaterThanOrEqualTo: DateTime.now().add(Duration(days: -1)))
-        .orderBy('date')
-        .snapshots()
-        .asyncMap<List<EventDetails>>((snapshot) => snapshot.documents
-            .map((doc) => EventDetails.fromSnapshot(doc))
-            .toList());
+      .collection(FireStoreKeys.eventCollection)
+      .where('date',
+          isGreaterThanOrEqualTo: DateTime.now().add(Duration(days: -1)))
+      .orderBy('date')
+      .snapshots()
+      .asyncMap<List<EventDetails>>((snapshot) => snapshot.documents
+          .map((doc) => EventDetails.fromSnapshot(doc))
+          .toList());
+}
+
+abstract class RegistrationStates {
+  static const String defaultState = undefined;
+  static const String undefined = 'UNDEFINED';
+  static const String registered = 'REGISTERED';
+  static const String shortlisted = 'SHORTLISTED';
+  static const String cancelled = 'CANCELLED';
+  static const String confirmed = 'CONFIRMED';
 }
 
 class EventDetails {
@@ -19,6 +30,8 @@ class EventDetails {
   final Venue venue;
   final DocumentReference reference;
   final String bannerUrl;
+  final String registrationStatus;
+  final Map registrations;
 
   EventDetails({
     this.eventTitle,
@@ -26,6 +39,8 @@ class EventDetails {
     this.reference,
     this.date,
     this.bannerUrl,
+    this.registrationStatus = RegistrationStates.undefined,
+    this.registrations
   });
 
   String get formattedDate => formatDate(
@@ -33,14 +48,21 @@ class EventDetails {
         DateFormats.shortUiDateFormat,
       );
 
+  EventDetails.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
   EventDetails.fromMap(Map<String, dynamic> map, {this.reference})
       : eventTitle = map['eventTitle'],
         date = (map['date'] as Timestamp).toDate(),
         bannerUrl = map['bannerUrl'],
+        registrations = map['registrations'],
+        registrationStatus = _findRegistrationStatus(map['registrations']),
         venue = Venue.fromMap(map['venue']);
 
-  EventDetails.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+  static String _findRegistrationStatus(Map registrations) =>
+      registrations != null && registrations[userCache.user.id] != null
+          ? registrations[userCache.user.id]
+          : RegistrationStates.defaultState;
 }
 
 class Venue {
