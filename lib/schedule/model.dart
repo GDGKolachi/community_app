@@ -3,21 +3,13 @@ import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/util.dart';
 
 class ScheduleApi {
-  Future<List<Session>> getSessionList() async {
-    var date = await Firestore.instance
-        .collection(FireStoreKeys.eventCollection)
-        .snapshots()
-        .first;
-
-    var sessionCollection = date.documents.first.reference
-        .collection(FireStoreKeys.sessionCollection);
-
-    var sessionList = await sessionCollection.getDocuments();
-
-    return sessionList.documents
-        .map((item) => Session.fromSnapshot(item))
-        .toList();
-  }
+  Stream<List<Session>> getSessions(String eventId) => Firestore.instance
+      .collection('${FireStoreKeys.eventCollection}/$eventId/${FireStoreKeys.sessionCollection}')
+      .orderBy('startDateTime')
+      .snapshots()
+      .asyncMap<List<Session>>((snapshot) => snapshot.documents
+          .map((doc) => Session.fromSnapshot(doc))
+          .toList());
 }
 
 class Speaker {

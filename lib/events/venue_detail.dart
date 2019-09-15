@@ -24,14 +24,12 @@ class VenueDetailPageState extends State<VenueDetailPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: Column(
         children: <Widget>[_buildBody()],
@@ -125,7 +123,7 @@ class VenueDetailPageState extends State<VenueDetailPage> {
         onValue.documents.first['venue']['location']['latitude'].toString(),
       );
       _eventDetails = EventDetails(
-          reference: onValue.documents.first.reference,
+          id: onValue.documents.first.documentID,
           venue: Venue(
               address: onValue.documents.first['venue']['address'],
               title: onValue.documents.first['venue']['title'],

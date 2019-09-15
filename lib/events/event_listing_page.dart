@@ -3,6 +3,7 @@ import 'package:flutter_pk/events/event_detail_container.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/widgets/animated_progress_indicator.dart';
 import 'package:flutter_pk/widgets/navigation_drawer.dart';
 
 class EventListingPage extends StatelessWidget {
@@ -31,9 +32,7 @@ class EventListingPage extends StatelessWidget {
         stream: api.events,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return AnimatedProgressIndicator();
           }
 
           var events = snapshot.data;
@@ -64,7 +63,7 @@ class EventListItem extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => EventDetailContainer(),
+          builder: (_) => EventDetailContainer(event),
         ),
       ),
       leading: Text(

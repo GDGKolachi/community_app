@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
-import 'package:flutter_pk/registration/registration.dart';
 
 class EventApi {
   Stream<List<EventDetails>> get events => Firestore.instance
@@ -28,7 +27,7 @@ class EventDetails {
   final DateTime date;
   final String eventTitle;
   final Venue venue;
-  final DocumentReference reference;
+  final String id;
   final String bannerUrl;
   final String registrationStatus;
   final Map registrations;
@@ -36,7 +35,7 @@ class EventDetails {
   EventDetails({
     this.eventTitle,
     this.venue,
-    this.reference,
+    this.id,
     this.date,
     this.bannerUrl,
     this.registrationStatus = RegistrationStates.undefined,
@@ -49,9 +48,9 @@ class EventDetails {
       );
 
   EventDetails.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+      : this.fromMap(snapshot.data, id: snapshot.reference.documentID);
 
-  EventDetails.fromMap(Map<String, dynamic> map, {this.reference})
+  EventDetails.fromMap(Map<String, dynamic> map, {this.id})
       : eventTitle = map['eventTitle'],
         date = (map['date'] as Timestamp).toDate(),
         bannerUrl = map['bannerUrl'],

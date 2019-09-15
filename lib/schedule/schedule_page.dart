@@ -3,10 +3,13 @@ import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/schedule/model.dart';
 import 'package:flutter_pk/schedule/session_detail.dart';
 import 'package:flutter_pk/theme.dart';
-import 'package:flutter_pk/widgets/custom_app_bar.dart';
-import 'package:progress_indicators/progress_indicators.dart';
+import 'package:flutter_pk/widgets/animated_progress_indicator.dart';
 
 class SchedulePage extends StatefulWidget {
+  final String eventId;
+
+  SchedulePage(this.eventId);
+
   @override
   SchedulePageState createState() {
     return new SchedulePageState();
@@ -18,55 +21,23 @@ class SchedulePageState extends State<SchedulePage>
   ScheduleApi api = ScheduleApi();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _fetchSessions();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            CustomAppBar(
-              title: 'Schedule',
-            ),
-            _buildList()
-          ],
-        ),
-      ),
-    );
-  }
+    return StreamBuilder<List<Session>>(
+      stream: api.getSessions(widget.eventId),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return AnimatedProgressIndicator();
+        }
 
-  Widget _buildList() {
-    return Expanded(
-      child: FutureBuilder<List<Session>>(
-        future: _fetchSessions(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: HeartbeatProgressIndicator(
-                child: SizedBox(
-                  height: 40.0,
-                  width: 40.0,
-                  child: Image(image: AssetImage('assets/loader.png')),
-                ),
-              ),
-            );
-          } else {
-            var sessions = snapshot.data;
-            return ListView.builder(
-              itemCount: sessions.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _buildListItem(context, sessions[index]);
-              },
-              padding: const EdgeInsets.only(top: 20.0),
-            );
-          }
-        },
-      ),
+        var sessions = snapshot.data;
+        return ListView.builder(
+          itemCount: sessions.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _buildListItem(context, sessions[index]);
+          },
+          padding: const EdgeInsets.only(top: 20.0),
+        );
+      },
     );
   }
 
@@ -159,19 +130,9 @@ class SchedulePageState extends State<SchedulePage>
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => SessionDetailPage(
-                session: session,
-              ),
+            session: session,
+          ),
         ),
       );
-  }
-
-  Future<List<Session>> _fetchSessions() async {
-    try {
-      var response = await api.getSessionList();
-      return response;
-    } catch (ex) {
-      print(ex);
-      return null;
-    }
   }
 }
