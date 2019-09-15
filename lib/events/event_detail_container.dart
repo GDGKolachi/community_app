@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_pk/caches/user.dart';
+import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/events/venue_detail.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/registration/registration.dart';
 import 'package:flutter_pk/widgets/full_screen_loader.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,6 +15,10 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_pk/schedule/schedule_page.dart';
 
 class EventDetailContainer extends StatefulWidget {
+  final EventDetails event;
+
+  EventDetailContainer(this.event);
+
   @override
   EventDetailContainerState createState() {
     return new EventDetailContainerState();
@@ -27,75 +32,82 @@ class EventDetailContainerState extends State<EventDetailContainer> {
   bool _isLoading = false;
   bool _isUserPresent = false;
   User _user = new User();
-  List<Widget> widgets = <Widget>[
-    SchedulePage(),
-    Center(
-      child: Text('Hello two'),
-    ),
-    VenueDetailPage()
-  ];
+  List<Widget> widgets;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    widgets = <Widget>[
+      SchedulePage(widget.event.id),
+      Center(
+        child: Text('Hello two'),
+      ),
+      VenueDetailPage()
+    ];
     _setUser(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      sized: false,
-      child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: _isLoading
-            ? null
-            : FloatingActionButton.extended(
-                onPressed: _floatingButtonTapModerator,
-                icon: Icon(floatingButtonIcon),
-                label: Text(floatingButtonLabel),
-              ),
-        body: Stack(
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: _isLoading
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: _floatingButtonTapModerator,
+              icon: Icon(floatingButtonIcon),
+              label: Text(floatingButtonLabel),
+            ),
+      appBar: AppBar(
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            widgets.elementAt(_selectedIndex),
-            _isLoading ? FullScreenLoader() : Container()
+            Text(widget.event.eventTitle),
+            Text(
+              formatDate(widget.event.date, DateFormats.shortUiDateFormat),
+              style: Theme.of(context).textTheme.caption,
+            ),
           ],
         ),
-        bottomNavigationBar: _isLoading
-            ? null
-            : BottomNavigationBar(
-                onTap: (value) {
-                  floatingButtonLabel =
-                      _user.isRegistered ? 'Scan QR' : 'Register';
-                  floatingButtonIcon = _user.isRegistered
-                      ? Icons.center_focus_weak
-                      : Icons.group_work;
-                  if (value == 2) {
-                    floatingButtonLabel = 'Navigate';
-                    floatingButtonIcon = Icons.my_location;
-                  }
-                  if (value != 1)
-                    setState(() {
-                      _selectedIndex = value;
-                    });
-                },
-                currentIndex: _selectedIndex,
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.date_range), title: Text('Schedule')),
-                  BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.date_range,
-                        color: Colors.transparent,
-                      ),
-                      title: Text(' ')),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.location_on), title: Text('Venue')),
-                ],
-              ),
       ),
+      body: Stack(
+        children: <Widget>[
+          widgets.elementAt(_selectedIndex),
+          _isLoading ? FullScreenLoader() : Container()
+        ],
+      ),
+      bottomNavigationBar: _isLoading
+          ? null
+          : BottomNavigationBar(
+              onTap: (value) {
+                floatingButtonLabel =
+                    _user.isRegistered ? 'Scan QR' : 'Register';
+                floatingButtonIcon = _user.isRegistered
+                    ? Icons.center_focus_weak
+                    : Icons.group_work;
+                if (value == 2) {
+                  floatingButtonLabel = 'Navigate';
+                  floatingButtonIcon = Icons.my_location;
+                }
+                if (value != 1)
+                  setState(() {
+                    _selectedIndex = value;
+                  });
+              },
+              currentIndex: _selectedIndex,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.date_range), title: Text('Schedule')),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.date_range,
+                      color: Colors.transparent,
+                    ),
+                    title: Text(' ')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.location_on), title: Text('Venue')),
+              ],
+            ),
     );
   }
 
@@ -294,8 +306,7 @@ class EventDetailContainerState extends State<EventDetailContainer> {
         fullscreenDialog: true,
       ),
     );
-    var user =
-        await userCache.getUser(userCache.user.id, useCached: false);
+    var user = await userCache.getUser(userCache.user.id, useCached: false);
     setState(() {
       _user = user;
     });
