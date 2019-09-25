@@ -4,12 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/events/model.dart';
-import 'package:flutter_pk/events/venue_detail.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/registration/registration.dart';
-import 'package:flutter_pk/widgets/full_screen_loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_pk/schedule/schedule_page.dart';
@@ -25,39 +23,39 @@ class EventDetailContainer extends StatefulWidget {
   }
 }
 
-class EventDetailContainerState extends State<EventDetailContainer> {
+class EventDetailContainerState extends State<EventDetailContainer>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   String floatingButtonLabel = 'Register';
   IconData floatingButtonIcon = Icons.group_work;
   bool _isLoading = false;
   bool _isUserPresent = false;
   User _user = new User();
-  List<Widget> widgets;
+  List<Widget> tabPages;
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    widgets = <Widget>[
+    tabPages = <Widget>[
+      EventDetailPage(widget.event),
       SchedulePage(widget.event.id),
-      Center(
-        child: Text('Hello two'),
-      ),
-      VenueDetailPage()
+      MessageBoard(),
     ];
+    _tabController = TabController(
+      length: tabPages.length,
+      initialIndex: 0,
+      vsync: this,
+    )..addListener(
+        () => setState(() => _selectedIndex = _tabController.index),
+      );
+
     _setUser(true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _isLoading
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: _floatingButtonTapModerator,
-              icon: Icon(floatingButtonIcon),
-              label: Text(floatingButtonLabel),
-            ),
       appBar: AppBar(
         title: Column(
           mainAxisSize: MainAxisSize.min,
@@ -70,42 +68,39 @@ class EventDetailContainerState extends State<EventDetailContainer> {
           ],
         ),
       ),
-      body: Stack(
-        children: <Widget>[
-          widgets.elementAt(_selectedIndex),
-          _isLoading ? FullScreenLoader() : Container()
-        ],
+      body: TabBarView(
+        children: tabPages,
+        controller: _tabController,
       ),
+      // body: Stack(
+      //   children: <Widget>[
+      //     widgets[_selectedIndex],
+      //     _isLoading ? FullScreenLoader() : Container()
+      //   ],
+      // ),
       bottomNavigationBar: _isLoading
           ? null
           : BottomNavigationBar(
               onTap: (value) {
-                floatingButtonLabel =
-                    _user.isRegistered ? 'Scan QR' : 'Register';
-                floatingButtonIcon = _user.isRegistered
-                    ? Icons.center_focus_weak
-                    : Icons.group_work;
-                if (value == 2) {
-                  floatingButtonLabel = 'Navigate';
-                  floatingButtonIcon = Icons.my_location;
-                }
-                if (value != 1)
-                  setState(() {
-                    _selectedIndex = value;
-                  });
+                setState(() {
+                  _selectedIndex = value;
+                  _tabController.index = _selectedIndex;
+                });
               },
               currentIndex: _selectedIndex,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.date_range), title: Text('Schedule')),
+                  icon: Icon(Icons.event),
+                  title: Text('Summary'),
+                ),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.date_range,
-                      color: Colors.transparent,
-                    ),
-                    title: Text(' ')),
+                  icon: Icon(Icons.schedule),
+                  title: Text('Schedule'),
+                ),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.location_on), title: Text('Venue')),
+                  icon: Icon(Icons.forum),
+                  title: Text('Messages'),
+                ),
               ],
             ),
     );
@@ -325,5 +320,51 @@ class EventDetailContainerState extends State<EventDetailContainer> {
       floatingButtonIcon =
           _user.isRegistered ? Icons.center_focus_weak : Icons.group_work;
     });
+  }
+}
+
+class MessageBoard extends StatelessWidget {
+  const MessageBoard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemBuilder: (context, index) => ListTile(
+          title: Text('Announcement text'),
+          subtitle: Text('Posted by ∙ 12 Jan'),
+        ),
+        itemCount: 5,
+        separatorBuilder: (_, __) => Divider(),
+    );
+  }
+}
+
+class EventDetailPage extends StatelessWidget {
+  final EventDetails event;
+
+  const EventDetailPage(
+    this.event, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Placeholder(
+          fallbackHeight: 240,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            event.description,
+            style: Theme.of(context).textTheme.subhead,
+          ),
+        ),
+      ],
+    );
   }
 }

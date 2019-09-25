@@ -30,12 +30,46 @@ class SchedulePageState extends State<SchedulePage>
         }
 
         var sessions = snapshot.data;
-        return ListView.builder(
-          itemCount: sessions.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildListItem(context, sessions[index]);
-          },
-          padding: const EdgeInsets.only(top: 20.0),
+        return Column(
+          children: <Widget>[
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              elevation: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  FlatButton.icon(
+                    icon: Icon(Icons.date_range),
+                    label: Text('Filter by date'.toUpperCase()),
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime(2019, 10, 18),
+                        firstDate: DateTime(2019, 10, 18),
+                        lastDate: DateTime(2019, 10, 19),
+                      );
+                    },
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.label),
+                    label: Text('Filter by track'.toUpperCase()),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: sessions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildListItem(context, sessions[index]);
+                },
+                padding: const EdgeInsets.only(top: 20.0),
+              ),
+            ),
+          ],
         );
       },
     );

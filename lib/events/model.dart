@@ -31,6 +31,7 @@ class EventDetails {
   final String bannerUrl;
   final String registrationStatus;
   final Map registrations;
+  final String description;
 
   EventDetails({
     this.eventTitle,
@@ -38,6 +39,7 @@ class EventDetails {
     this.id,
     this.date,
     this.bannerUrl,
+    this.description,
     this.registrationStatus = RegistrationStates.undefined,
     this.registrations
   });
@@ -56,7 +58,8 @@ class EventDetails {
         bannerUrl = map['bannerUrl'],
         registrations = map['registrations'],
         registrationStatus = _findRegistrationStatus(map['registrations']),
-        venue = Venue.fromMap(map['venue']);
+        venue = Venue.fromMap(map['venue']),
+        description = "Event description";
 
   static String _findRegistrationStatus(Map registrations) =>
       registrations != null && registrations[userCache.user.id] != null
