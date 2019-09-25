@@ -352,7 +352,7 @@ class EventDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Placeholder(
           fallbackHeight: 240,
@@ -364,6 +364,14 @@ class EventDetailPage extends StatelessWidget {
             style: Theme.of(context).textTheme.subhead,
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: RaisedButton.icon(
+            icon: Icon(Icons.settings),
+            label: Text('Manage'),
+            onPressed: () {},
+          ),
+        )
       ],
     );
   }
