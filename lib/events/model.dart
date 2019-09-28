@@ -59,7 +59,7 @@ class EventDetails {
         registrations = map['registrations'],
         registrationStatus = _findRegistrationStatus(map['registrations']),
         venue = Venue.fromMap(map['venue']),
-        description = "Event description";
+        description = map['description'];
 
   static String _findRegistrationStatus(Map registrations) =>
       registrations != null && registrations[userCache.user.id] != null
