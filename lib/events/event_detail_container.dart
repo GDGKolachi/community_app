@@ -26,7 +26,7 @@ class EventDetailContainer extends StatefulWidget {
 class EventDetailContainerState extends State<EventDetailContainer>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
-  String floatingButtonLabel = 'Register';
+  String floatingButtonLabel = 'REGISTER';
   IconData floatingButtonIcon = Icons.group_work;
   bool _isLoading = false;
   bool _isUserPresent = false;
@@ -113,7 +113,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
             desc: "You will be able to scan a QR on the event day!\nCheers!",
             buttons: [
               DialogButton(
-                child: Text("Cool!",
+                child: Text("COOL!",
                     style: Theme.of(context).textTheme.title.copyWith(
                           color: Colors.white,
                         )),
@@ -135,7 +135,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
           desc: "You are already marked present! \nEnjoy the event!",
           buttons: [
             DialogButton(
-              child: Text("Cool!",
+              child: Text("COOL!",
                   style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white,
                       )),
@@ -227,7 +227,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
           desc: "You have been marked present! Enjoy the event!",
           buttons: [
             DialogButton(
-              child: Text("Cool!",
+              child: Text("COOL!",
                   style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white,
                       )),
@@ -249,7 +249,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
           desc: "Looks like you scanned an invalid QR",
           buttons: [
             DialogButton(
-              child: Text("Dismiss",
+              child: Text("DISMISS",
                   style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white,
                       )),
@@ -270,7 +270,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
         desc: "An error has occurred",
         buttons: [
           DialogButton(
-            child: Text("Dismiss",
+            child: Text("DISMISS",
                 style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white,
                     )),
@@ -310,7 +310,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
     setState(() {
       _user = user;
       _isUserPresent = user.isPresent;
-      floatingButtonLabel = _user.isRegistered ? 'Scan QR' : 'Register';
+      floatingButtonLabel = _user.isRegistered ? 'SCAN QR' : 'REGISTER';
       floatingButtonIcon =
           _user.isRegistered ? Icons.center_focus_weak : Icons.group_work;
     });

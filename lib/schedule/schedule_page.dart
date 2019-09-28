@@ -42,7 +42,7 @@ class SchedulePageState extends State<SchedulePage>
                 children: <Widget>[
                   FlatButton.icon(
                     icon: Icon(Icons.date_range),
-                    label: Text('Filter by date'.toUpperCase()),
+                    label: Text('FILTER BY DATE'.toUpperCase()),
                     onPressed: () {
                       showDatePicker(
                         context: context,
@@ -54,7 +54,7 @@ class SchedulePageState extends State<SchedulePage>
                   ),
                   FlatButton.icon(
                     icon: Icon(Icons.label),
-                    label: Text('Filter by track'.toUpperCase()),
+                    label: Text('FILTER BY TRACK'.toUpperCase()),
                     onPressed: () {},
                   ),
                 ],

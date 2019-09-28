@@ -58,7 +58,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         desc: "An error has occurred",
         buttons: [
           DialogButton(
-            child: Text("Dismiss",
+            child: Text("DISMISS",
                 style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white,
                     )),
@@ -167,7 +167,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 child: RaisedButton(
                   onPressed: _handleSignIn,
                   textColor: Colors.white,
-                  child: Text('Get started'),
+                  child: Text('GET STARTED'),
                 ),
               )
             ],
@@ -207,7 +207,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         desc: "An error has occurred",
         buttons: [
           DialogButton(
-            child: Text("Dismiss",
+            child: Text("DISMISS",
                 style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white,
                     )),

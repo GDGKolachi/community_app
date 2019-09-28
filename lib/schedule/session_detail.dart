@@ -51,7 +51,7 @@ class SessionDetailPage extends StatelessWidget {
                 "You will be able to provide feedback once the event day ends!",
             buttons: [
               DialogButton(
-                child: Text("Cool!",
+                child: Text("COOL!",
                     style: Theme.of(context).textTheme.title.copyWith(
                           color: Colors.white,
                         )),

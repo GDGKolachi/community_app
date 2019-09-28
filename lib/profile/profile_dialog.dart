@@ -78,7 +78,7 @@ class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
                     desc: "An error has occurred",
                     buttons: [
                       DialogButton(
-                        child: Text("Dismiss",
+                        child: Text("DISMISS",
                             style: Theme.of(context).textTheme.title.copyWith(
                                   color: Colors.white,
                                 )),
