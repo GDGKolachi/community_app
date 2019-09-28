@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/registration/model.dart';
 
-class EventApi {
+class EventBloc {
   Stream<List<EventDetails>> get events => Firestore.instance
       .collection(FireStoreKeys.eventCollection)
       .where('date',
@@ -13,16 +14,6 @@ class EventApi {
           .map((doc) => EventDetails.fromSnapshot(doc))
           .toList());
 }
-
-abstract class RegistrationStates {
-  static const String defaultState = undefined;
-  static const String undefined = 'UNDEFINED';
-  static const String registered = 'REGISTERED';
-  static const String shortlisted = 'SHORTLISTED';
-  static const String cancelled = 'CANCELLED';
-  static const String confirmed = 'CONFIRMED';
-}
-
 class EventDetails {
   final DateTime date;
   final String eventTitle;

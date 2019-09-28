@@ -4,7 +4,7 @@ import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginApi {
+class LoginService {
   Future<String> initiateLogin() async {
     GoogleSignInAuthentication googleAuth = await _handleGoogleSignIn();
 

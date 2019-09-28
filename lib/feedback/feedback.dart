@@ -21,7 +21,6 @@ class FullScreenFeedbackDialogState extends State<FullScreenFeedbackDialog> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: ColorDictionary.stringToColor[widget.session.color],
       body: Stack(

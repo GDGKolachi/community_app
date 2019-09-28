@@ -18,12 +18,12 @@ class SchedulePage extends StatefulWidget {
 
 class SchedulePageState extends State<SchedulePage>
     with SingleTickerProviderStateMixin {
-  ScheduleApi api = ScheduleApi();
+  ScheduleBloc bloc = ScheduleBloc();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Session>>(
-      stream: api.getSessions(widget.eventId),
+      stream: bloc.getSessions(widget.eventId),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return AnimatedProgressIndicator();

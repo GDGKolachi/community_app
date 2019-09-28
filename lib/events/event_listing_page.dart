@@ -3,11 +3,12 @@ import 'package:flutter_pk/events/event_detail_container.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/registration/registration_action.dart';
 import 'package:flutter_pk/widgets/animated_progress_indicator.dart';
 import 'package:flutter_pk/widgets/navigation_drawer.dart';
 
 class EventListingPage extends StatelessWidget {
-  final EventApi api = new EventApi();
+  final EventBloc bloc = new EventBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class EventListingPage extends StatelessWidget {
         child: NavigationDrawerItems(),
       ),
       body: StreamBuilder<List<EventDetails>>(
-        stream: api.events,
+        stream: bloc.events,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return AnimatedProgressIndicator();
@@ -104,49 +105,6 @@ class EventListItem extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-
-typedef void RegistrationCallback(BuildContext context, EventDetails event, String userId);
-
-class RegistrationAction extends StatelessWidget {
-  static Map<String, String> _buttonTextMap = {
-    RegistrationStates.undefined: 'REGISTER',
-    RegistrationStates.registered: 'SHORTLISTING PENDING',
-    RegistrationStates.shortlisted: 'CONFIRM REGISTRATION',
-    RegistrationStates.cancelled: 'RE-APPLY',
-    RegistrationStates.confirmed: 'VIEW EVENT',
-  };
-
-  static Map<String, RegistrationCallback> _buttonActionMap = {
-    RegistrationStates.undefined: (context, event, userId) {},
-    RegistrationStates.registered: (context, event, userId) {},
-    RegistrationStates.shortlisted: (context, event, userId) {},
-    RegistrationStates.cancelled: (context, event, userId) {},
-    RegistrationStates.confirmed: (context, event, userId) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => EventDetailContainer(event),
-        ),
-      ),
-  };
-
-  final String _text;
-  final RegistrationCallback _onTap;
-  final EventDetails event;
-
-  RegistrationAction(this.event)
-      : _text = _buttonTextMap[event.registrationStatus],
-       _onTap = _buttonActionMap[event.registrationStatus];
-
-  @override
-  Widget build(BuildContext context) {
-    return RaisedButton(
-      child: Text(_text),
-      shape: StadiumBorder(),
-      onPressed: () => _onTap(context, event, userCache.user.id),
     );
   }
 }

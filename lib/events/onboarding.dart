@@ -27,12 +27,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
   bool _isFetchingSharedPreferences = false;
   SharedPreferencesHandler preferences;
 
-  LoginApi api = LoginApi();
+  LoginService service = LoginService();
 
   @override
   void initState() {
     super.initState();
-    api.initialize();
+    service.initialize();
     preferences = SharedPreferencesHandler();
     _getSharedPreferences();
   }
@@ -184,7 +184,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     setState(() => _isLoading = true);
 
     try {
-      String userId = await api.initiateLogin();
+      String userId = await service.initiateLogin();
       await userCache.getUser(userId);
 
       await Navigator.of(context).push(

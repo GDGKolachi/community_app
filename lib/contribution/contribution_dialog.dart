@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pk/caches/user.dart';
-import 'package:flutter_pk/dialogs/custom_error_dialog.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -22,7 +20,6 @@ class FullScreenContributionDialogState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
