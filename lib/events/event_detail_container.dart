@@ -72,12 +72,6 @@ class EventDetailContainerState extends State<EventDetailContainer>
         children: tabPages,
         controller: _tabController,
       ),
-      // body: Stack(
-      //   children: <Widget>[
-      //     widgets[_selectedIndex],
-      //     _isLoading ? FullScreenLoader() : Container()
-      //   ],
-      // ),
       bottomNavigationBar: _isLoading
           ? null
           : BottomNavigationBar(
@@ -332,11 +326,11 @@ class MessageBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemBuilder: (context, index) => ListTile(
-          title: Text('Announcement text'),
-          subtitle: Text('Posted by ∙ 12 Jan'),
-        ),
-        itemCount: 5,
-        separatorBuilder: (_, __) => Divider(),
+        title: Text('Announcement text'),
+        subtitle: Text('Posted by ∙ 12 Jan'),
+      ),
+      itemCount: 5,
+      separatorBuilder: (_, __) => Divider(),
     );
   }
 }
@@ -354,21 +348,36 @@ class EventDetailPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Placeholder(
-          fallbackHeight: 240,
+        Hero(
+          tag: 'banner_${event.id}',
+          /// The event listing has the following to show the image,
+          /// so using the same widget hierarchy to let the hero 
+          /// animation run properly.
+          child: Container(
+            height: 240,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+                image: NetworkImage(event.bannerUrl),
+              ),
+            ),
+          ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            event.description,
-            style: Theme.of(context).textTheme.subhead,
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              event.description,
+              style: Theme.of(context).textTheme.subhead,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(16),
           child: RaisedButton.icon(
             icon: Icon(Icons.settings),
-            label: Text('Manage'),
+            label: Text('MANAGE'),
             onPressed: () {},
           ),
         )

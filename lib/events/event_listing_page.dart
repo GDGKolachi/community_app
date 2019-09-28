@@ -72,38 +72,44 @@ class EventListItem extends StatelessWidget {
         style: eventDateStyle,
       ),
       title: Card(
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
-              image: NetworkImage(event.bannerUrl),
+        child: Hero(
+          tag: 'banner_${event.id}',
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+                image: NetworkImage(event.bannerUrl),
+              ),
             ),
-          ),
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 56, bottom: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                event.eventTitle,
-                style: eventTitleStyle,
-              ),
-              space,
-              Text(
-                '${event.venue.title}, ${event.venue.city}',
-                style: eventLocationStyle,
-              ),
-              space,
-              RegistrationAction(event.registrationStatus),
-            ],
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 56, bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  event.eventTitle,
+                  style: eventTitleStyle,
+                ),
+                space,
+                Text(
+                  '${event.venue.title}, ${event.venue.city}',
+                  style: eventLocationStyle,
+                ),
+                space,
+                RegistrationAction(event),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+
+typedef void RegistrationCallback(BuildContext context, EventDetails event, String userId);
 
 class RegistrationAction extends StatelessWidget {
   static Map<String, String> _buttonTextMap = {
@@ -113,19 +119,34 @@ class RegistrationAction extends StatelessWidget {
     RegistrationStates.cancelled: 'RE-APPLY',
     RegistrationStates.confirmed: 'VIEW EVENT',
   };
-  final String _text;
-  final VoidCallback _onTap = () {};
 
-  RegistrationAction(String registrationStatus)
-      : _text = _buttonTextMap[registrationStatus];
-       
+  static Map<String, RegistrationCallback> _buttonActionMap = {
+    RegistrationStates.undefined: (context, event, userId) {},
+    RegistrationStates.registered: (context, event, userId) {},
+    RegistrationStates.shortlisted: (context, event, userId) {},
+    RegistrationStates.cancelled: (context, event, userId) {},
+    RegistrationStates.confirmed: (context, event, userId) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => EventDetailContainer(event),
+        ),
+      ),
+  };
+
+  final String _text;
+  final RegistrationCallback _onTap;
+  final EventDetails event;
+
+  RegistrationAction(this.event)
+      : _text = _buttonTextMap[event.registrationStatus],
+       _onTap = _buttonActionMap[event.registrationStatus];
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
       child: Text(_text),
       shape: StadiumBorder(),
-      onPressed: _onTap,
+      onPressed: () => _onTap(context, event, userCache.user.id),
     );
   }
 }
