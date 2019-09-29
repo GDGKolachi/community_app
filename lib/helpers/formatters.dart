@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
 
 abstract class DateFormats {
-  static String shortUiDateTimeFormat = 'MMM dd, yyyy, h:mm a';
-  static String shortUiDateFormat = 'MMM dd, yyyy';
+  static String shortUiDateTimeFormat = 'dd MMM yyyy, h:mm a';
+  static String shortUiDateFormat = 'dd MMM yyyy';
   static String shortUiTimeFormat = 'h:mm a';
 }
 
