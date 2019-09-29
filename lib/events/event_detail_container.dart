@@ -7,6 +7,7 @@ import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/messages/messages_board.dart';
 import 'package:flutter_pk/registration/registration.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -40,7 +41,7 @@ class EventDetailContainerState extends State<EventDetailContainer>
     tabPages = <Widget>[
       EventDetailPage(widget.event),
       SchedulePage(widget.event.id),
-      MessageBoard(),
+      MessageBoard(widget.event.id),
     ];
     _tabController = TabController(
       length: tabPages.length,
@@ -314,24 +315,6 @@ class EventDetailContainerState extends State<EventDetailContainer>
       floatingButtonIcon =
           _user.isRegistered ? Icons.center_focus_weak : Icons.group_work;
     });
-  }
-}
-
-class MessageBoard extends StatelessWidget {
-  const MessageBoard({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      itemBuilder: (context, index) => ListTile(
-        title: Text('Announcement text'),
-        subtitle: Text('Posted by ∙ 12 Jan'),
-      ),
-      itemCount: 5,
-      separatorBuilder: (_, __) => Divider(),
-    );
   }
 }
 

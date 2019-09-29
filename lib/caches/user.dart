@@ -42,14 +42,14 @@ class User {
     this.mobileNumber,
   });
 
-  User.fromMap(Map<String, dynamic> map, {this.reference})
+  User.fromMap(Map map, {this.reference})
       : id = map['id'],
         name = map['name'],
         email = map['email'],
         photoUrl = map['photoUrl'],
-        isRegistered = map['isRegistered'],
-        isContributor = map['isContributor'],
-        isPresent = map['isPresent'],
+        isRegistered = map['isRegistered'] ?? false,
+        isContributor = map['isContributor'] ?? false,
+        isPresent = map['isPresent'] ?? false,
         mobileNumber = map['mobileNumber'] {
     if (isContributor) contribution = Contribution.fromMap(map['contribution']);
   }
