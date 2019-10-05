@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/caches/user.dart';
+import 'package:flutter_pk/events/manage/registrations_page.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -333,8 +334,9 @@ class EventDetailPage extends StatelessWidget {
       children: <Widget>[
         Hero(
           tag: 'banner_${event.id}',
+
           /// The event listing has the following to show the image,
-          /// so using the same widget hierarchy to let the hero 
+          /// so using the same widget hierarchy to let the hero
           /// animation run properly.
           child: Container(
             height: 240,
@@ -356,14 +358,20 @@ class EventDetailPage extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: RaisedButton.icon(
-            icon: Icon(Icons.settings),
-            label: Text('MANAGE'),
-            onPressed: () {},
-          ),
-        )
+        if (event.isManagedBy(userCache.user.id))
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: RaisedButton.icon(
+              icon: Icon(Icons.settings),
+              label: Text('MANAGE'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => IncomingRegistrationsPage(event),
+                ),
+              ),
+            ),
+          )
       ],
     );
   }

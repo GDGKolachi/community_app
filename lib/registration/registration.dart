@@ -542,8 +542,8 @@ class RegistrationPageState extends State<RegistrationPage> {
     try {
       Firestore.instance.runTransaction((transaction) async {
         await transaction.update(user.reference, {
-          'registration': Registration(
-            occupation: _isStudent ? 'Student' : 'Professional',
+          'registration': Occupation(
+            type: _isStudent ? 'Student' : 'Professional',
             workOrInstitute: studentProfessionalController.text,
             designation: designationController.text,
           ).toJson(),
@@ -582,30 +582,30 @@ class RegistrationPageState extends State<RegistrationPage> {
   }
 }
 
-class Registration {
-  final String occupation;
+class Occupation {
+  final String type;
   final String workOrInstitute;
   final String designation;
   final DocumentReference reference;
 
-  Registration({
-    this.occupation,
+  Occupation({
+    this.type,
     this.designation = 'not applicable',
     this.workOrInstitute,
     this.reference,
   });
 
-  Registration.fromMap(Map<String, dynamic> map, {this.reference})
-      : occupation = map['occupation'],
+  Occupation.fromMap(Map map, {this.reference})
+      : type = map['occupation'],
         designation = map['designation'],
         workOrInstitute = map['workOrInstitute'];
 
   Map<String, dynamic> toJson() => {
-        "occupation": this.occupation,
+        "occupation": this.type,
         "workOrInstitute": this.workOrInstitute,
         "designation": this.designation,
       };
 
-  Registration.fromSnapshot(DocumentSnapshot snapshot)
+  Occupation.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 }

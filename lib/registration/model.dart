@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/global.dart';
 
 class RegistrationService {
-  Future updateStatus(String eventId, String userId, String status) async {
+  Future updateStatus(String eventId, User user, String status) async {
     var reference = Firestore.instance
         .collection(FireStoreKeys.eventCollection)
         .document(eventId);
@@ -14,7 +15,8 @@ class RegistrationService {
         eventSnapshot.data['registrations'] = <String, dynamic>{};
       }
 
-      eventSnapshot.data['registrations'][userId] = status;
+      var registration = user.toJson()..['status'] = status;
+      eventSnapshot.data['registrations'][user.id] = registration;
       await tx.update(reference, <String, dynamic>{
         'registrations': eventSnapshot.data['registrations'],
       });

@@ -61,7 +61,7 @@ class EventDetails {
 
   static String _findRegistrationStatus(Map registrations) =>
       registrations != null && registrations[userCache.user.id] != null
-          ? registrations[userCache.user.id]
+          ? registrations[userCache.user.id]['status']
           : RegistrationStates.defaultState;
 
   bool isManagedBy(String userId) =>

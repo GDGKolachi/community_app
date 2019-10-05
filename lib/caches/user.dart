@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_pk/registration/registration.dart';
 
 class UserCache {
   User _user;
@@ -27,6 +28,7 @@ class User {
   final bool isContributor;
   final bool isPresent;
   final DocumentReference reference;
+  final Occupation occupation;
 
   Contribution contribution;
 
@@ -40,6 +42,7 @@ class User {
     this.isContributor = false,
     this.isPresent = false,
     this.mobileNumber,
+    this.occupation,
   });
 
   User.fromMap(Map map, {this.reference})
@@ -50,7 +53,10 @@ class User {
         isRegistered = map['isRegistered'] ?? false,
         isContributor = map['isContributor'] ?? false,
         isPresent = map['isPresent'] ?? false,
-        mobileNumber = map['mobileNumber'] {
+        mobileNumber = map['mobileNumber'],
+        occupation = map['registration'] == null
+            ? null
+            : Occupation.fromMap(map['registration']) {
     if (isContributor) contribution = Contribution.fromMap(map['contribution']);
   }
 
@@ -62,7 +68,8 @@ class User {
         "isRegistered": isRegistered,
         "mobileNumber": mobileNumber,
         "isPresent": isPresent,
-        "isContributor": isContributor
+        "isContributor": isContributor,
+        "registration": occupation.toJson(),
       };
 
   User.fromSnapshot(DocumentSnapshot snapshot)

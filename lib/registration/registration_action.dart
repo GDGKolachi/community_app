@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/events/event_detail_container.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_pk/registration/model.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 typedef void RegistrationCallback(
-    BuildContext context, EventDetails event, String userId);
+    BuildContext context, EventDetails event, User user);
 
 class RegistrationAction extends StatelessWidget {
   static Map<String, String> _buttonTextMap = {
@@ -38,12 +39,13 @@ class RegistrationAction extends StatelessWidget {
     return RaisedButton(
       child: Text(_text),
       shape: StadiumBorder(),
-      onPressed: () => _onTap(context, event, userCache.user.id),
+      onPressed: () => _onTap(context, event, userCache.user),
     );
   }
 }
 
-void _actionOnUnregestered(BuildContext context, EventDetails event, String userId) {
+void _actionOnUnregestered(
+    BuildContext context, EventDetails event, User user) {
   _showInfoDialog(
     context: context,
     title: 'Register',
@@ -52,13 +54,13 @@ void _actionOnUnregestered(BuildContext context, EventDetails event, String user
     postiveTitle: 'REGISTER',
     positiveAction: () async {
       var service = RegistrationService();
-      await service.updateStatus(event.id, userId, RegistrationStates.registered);
+      await service.updateStatus(event.id, user, RegistrationStates.registered);
     },
     negativeTitle: 'CANCEL',
   );
 }
 
-void _actionOnRegistered(BuildContext context, EventDetails event, String userId) {
+void _actionOnRegistered(BuildContext context, EventDetails event, User user) {
   _showInfoDialog(
     context: context,
     title: 'Hold on!',
@@ -67,7 +69,7 @@ void _actionOnRegistered(BuildContext context, EventDetails event, String userId
   );
 }
 
-void _actionOnShortlisted(BuildContext context, EventDetails event, String userId) {
+void _actionOnShortlisted(BuildContext context, EventDetails event, User user) {
   _showInfoDialog(
     context: context,
     title: 'Confirm',
@@ -77,24 +79,24 @@ void _actionOnShortlisted(BuildContext context, EventDetails event, String userI
     postiveTitle: 'CONFIRM',
     positiveAction: () async {
       var service = RegistrationService();
-      await service.updateStatus(
-          event.id, userId, RegistrationStates.confirmed);
+      await service.updateStatus(event.id, user, RegistrationStates.confirmed);
     },
     negativeTitle: 'CANCEL',
     negativeAction: () async {
       var service = RegistrationService();
-      await service.updateStatus(
-          event.id, userId, RegistrationStates.cancelled);
+      await service.updateStatus(event.id, user, RegistrationStates.cancelled);
     },
   );
 }
 
-void _actionOnCancelled(BuildContext context, EventDetails event, String userId) async {
+void _actionOnCancelled(
+    BuildContext context, EventDetails event, User user) async {
   var service = RegistrationService();
-  await service.updateStatus(event.id, userId, RegistrationStates.registered);
+  await service.updateStatus(event.id, user, RegistrationStates.registered);
 }
 
-void _actionOnConfirmed(BuildContext context, EventDetails event, String userId) => Navigator.push(
+void _actionOnConfirmed(BuildContext context, EventDetails event, User user) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => EventDetailContainer(event),
