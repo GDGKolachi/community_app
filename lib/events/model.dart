@@ -14,6 +14,7 @@ class EventBloc {
           .map((doc) => EventDetails.fromSnapshot(doc))
           .toList());
 }
+
 class EventDetails {
   final DateTime date;
   final String eventTitle;
@@ -23,6 +24,8 @@ class EventDetails {
   final String registrationStatus;
   final Map registrations;
   final String description;
+  final List<String> volunteers;
+  final List<String> organizers;
 
   EventDetails({
     this.eventTitle,
@@ -32,7 +35,9 @@ class EventDetails {
     this.bannerUrl,
     this.description,
     this.registrationStatus = RegistrationStates.undefined,
-    this.registrations
+    this.registrations,
+    this.volunteers,
+    this.organizers,
   });
 
   String get formattedDate => formatDate(
@@ -50,12 +55,17 @@ class EventDetails {
         registrations = map['registrations'],
         registrationStatus = _findRegistrationStatus(map['registrations']),
         venue = Venue.fromMap(map['venue']),
-        description = map['description'];
+        description = map['description'],
+        volunteers = List<String>.from(map['volunteers']),
+        organizers = List<String>.from(map['organizers']);
 
   static String _findRegistrationStatus(Map registrations) =>
       registrations != null && registrations[userCache.user.id] != null
           ? registrations[userCache.user.id]
           : RegistrationStates.defaultState;
+
+  bool isManagedBy(String userId) =>
+      volunteers.contains(userId) || organizers.contains(userId);
 }
 
 class Venue {
