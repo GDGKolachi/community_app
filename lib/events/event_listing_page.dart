@@ -3,6 +3,7 @@ import 'package:flutter_pk/events/event_detail_container.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/profile/profile_dialog.dart';
 import 'package:flutter_pk/registration/registration_action.dart';
 import 'package:flutter_pk/widgets/animated_progress_indicator.dart';
 import 'package:flutter_pk/widgets/navigation_drawer.dart';
@@ -16,13 +17,16 @@ class EventListingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Events'),
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                userCache.user.photoUrl,
+          GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  userCache.user.photoUrl,
+                ),
               ),
             ),
+            onTap: () => Navigator.push(context, FullScreenProfileDialog.route),
           ),
         ],
       ),

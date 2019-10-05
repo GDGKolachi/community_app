@@ -20,30 +20,14 @@ class NavigationDrawerItems extends StatelessWidget {
         ),
         _buildNavItem(
           context,
-          Icons.event,
-          'Events',
-        ),
-        _buildNavItem(
-          context,
           Icons.info,
           'About',
         ),
         _buildNavItem(
           context,
-          Icons.notifications,
-          'Notifications',
-        ),
-        _buildNavItem(
-          context,
           Icons.person,
           'My profile',
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FullScreenProfileDialog(),
-              fullscreenDialog: true,
-            ),
-          ),
+          onTap: () => Navigator.push(context, FullScreenProfileDialog.route),
         ),
         _buildNavItem(
           context,
