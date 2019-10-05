@@ -17,22 +17,22 @@ class LoginService {
 
     await _setUserToFireStore(user);
 
-    return user.uid;
+    return user.email;
   }
 
   Future _setUserToFireStore(FirebaseUser user) async {
     CollectionReference reference =
         Firestore.instance.collection(FireStoreKeys.userCollection);
 
-    var snapshot = await reference.document(user.uid).get();
+    var snapshot = await reference.document(user.email).get();
     if (!snapshot.exists) {
       var appUser = User(
           name: user.displayName,
           mobileNumber: user.phoneNumber,
-          id: user.uid,
+          id: user.email,
           photoUrl: user.photoUrl,
           email: user.email);
-      await reference.document(user.uid).setData(appUser.toJson(), merge: true);
+      await reference.document(user.email).setData(appUser.toJson(), merge: true);
     }
   }
 
