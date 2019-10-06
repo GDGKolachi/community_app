@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/messages/model.dart';
 import 'package:flutter_pk/widgets/animated_progress_indicator.dart';
+import 'package:flutter_pk/widgets/empty_list_message.dart';
 
 class MessageBoard extends StatelessWidget {
   final MessageBloc bloc = MessageBloc();
@@ -24,15 +25,7 @@ class MessageBoard extends StatelessWidget {
         var messages = snapshot.data;
 
         if (messages.length == 0) {
-          return Center(
-            child: Text(
-              'No incoming messages',
-              style: Theme.of(context)
-                  .textTheme
-                  .subhead
-                  .copyWith(color: Theme.of(context).hintColor),
-            ),
-          );
+          return EmptyListMessage('No incoming messages');
         }
 
         return ListView.separated(

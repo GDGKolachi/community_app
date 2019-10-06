@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/caches/user.dart';
-import 'package:flutter_pk/events/manage/registrations_page.dart';
+import 'package:flutter_pk/registration/incoming_registrations_page.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/messages/messages_board.dart';
 import 'package:flutter_pk/registration/registration.dart';
+import 'package:flutter_pk/widgets/two_line_title_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_pk/schedule/schedule_page.dart';
@@ -58,17 +59,10 @@ class EventDetailContainerState extends State<EventDetailContainer>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(widget.event.eventTitle),
-            Text(
-              formatDate(widget.event.date, DateFormats.shortUiDateFormat),
-              style: Theme.of(context).textTheme.caption,
-            ),
-          ],
-        ),
+      appBar: buildTwoLineTitleAppBar(
+        context,
+        widget.event.eventTitle,
+        formatDate(widget.event.date, DateFormats.shortUiDateFormat),
       ),
       body: TabBarView(
         children: tabPages,
@@ -364,12 +358,15 @@ class EventDetailPage extends StatelessWidget {
             child: RaisedButton.icon(
               icon: Icon(Icons.settings),
               label: Text('MANAGE'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => IncomingRegistrationsPage(event),
-                ),
-              ),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => IncomingRegistrationsPage(event),
+                  ),
+                );
+                Navigator.pop(context);
+              },
             ),
           )
       ],
