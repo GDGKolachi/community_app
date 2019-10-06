@@ -19,10 +19,10 @@ class RegistrationAction extends StatelessWidget {
   };
 
   static Map<String, RegistrationCallback> _buttonActionMap = {
-    RegistrationStates.undefined: _actionOnUnregestered,
+    RegistrationStates.undefined: _actionOnUnregistered,
     RegistrationStates.registered: _actionOnRegistered,
     RegistrationStates.shortlisted: _actionOnShortlisted,
-    RegistrationStates.cancelled: _actionOnCancelled,
+    RegistrationStates.cancelled: _actionOnUnregistered,
     RegistrationStates.confirmed: _actionOnConfirmed,
   };
 
@@ -44,7 +44,7 @@ class RegistrationAction extends StatelessWidget {
   }
 }
 
-void _actionOnUnregestered(
+void _actionOnUnregistered(
     BuildContext context, EventDetails event, User user) {
   _showInfoDialog(
     context: context,
@@ -55,6 +55,11 @@ void _actionOnUnregestered(
     positiveAction: () async {
       var service = RegistrationService();
       await service.updateStatus(event.id, user, RegistrationStates.registered);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration request submitted'),
+        ),
+      );
     },
     negativeTitle: 'CANCEL',
   );
@@ -80,19 +85,23 @@ void _actionOnShortlisted(BuildContext context, EventDetails event, User user) {
     positiveAction: () async {
       var service = RegistrationService();
       await service.updateStatus(event.id, user, RegistrationStates.confirmed);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration confirmed'),
+        ),
+      );
     },
     negativeTitle: 'CANCEL',
     negativeAction: () async {
       var service = RegistrationService();
       await service.updateStatus(event.id, user, RegistrationStates.cancelled);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration cancelled'),
+        ),
+      );
     },
   );
-}
-
-void _actionOnCancelled(
-    BuildContext context, EventDetails event, User user) async {
-  var service = RegistrationService();
-  await service.updateStatus(event.id, user, RegistrationStates.registered);
 }
 
 void _actionOnConfirmed(BuildContext context, EventDetails event, User user) =>

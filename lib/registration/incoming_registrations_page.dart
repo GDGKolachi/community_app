@@ -104,23 +104,32 @@ class IncomingRegistrationTile extends StatelessWidget {
       children: <Widget>[
         ListTile(
           title: Text(user.name),
-          subtitle: Text('${user.occupation.designation ?? user.occupation.type}'
-              ' at ${user.occupation.workOrInstitute}\n${user.email}'),
+          subtitle:
+              Text('${user.occupation.designation ?? user.occupation.type}'
+                  ' at ${user.occupation.workOrInstitute}\n${user.email}'),
           leading: CircleAvatar(
             backgroundImage: NetworkImage(user.photoUrl),
           ),
           trailing: RaisedButton(
             child: Text('APPROVE'),
             shape: StadiumBorder(),
-            onPressed: () {
-              var service = RegistrationService();
-              onApproved(user.id);
-              service.updateStatus(eventId, user, RegistrationStates.shortlisted);
-            },
+            onPressed: () => _approve(context),
           ),
         ),
         Divider(),
       ],
+    );
+  }
+
+  void _approve(BuildContext context) async {
+    var service = RegistrationService();
+    onApproved(user.id);
+    await service.updateStatus(eventId, user, RegistrationStates.shortlisted);
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content:
+            Text('Registration request submitted by ${user.name} is approved'),
+      ),
     );
   }
 }
