@@ -22,6 +22,9 @@ The app makes considerable use of following Firebase components:
 ### Setting up
 This repo does not contain some required Firebase setup. Follow [this guide](https://firebase.google.com/docs/flutter/setup) to setup Cloud Firestore for this app. There's also a good [video walkthrough](https://www.youtube.com/watch?v=DqJ_KjFzL9I) for setting up. 
 
+#### Google Sign-in (Android only)
+You'll need to follow [this guide](https://developers.google.com/android/guides/client-auth) to make Google Sign-in work. Otherwise it'll crash the app with `PlatformException`.
+
 ### Importing Firebase data
 The app depends on an already setup Firestore data in order to run properly which is present in `/data/firebase-export.json`. To import this data, follow these steps:
 1. Install [Firestore Import/Export utility](https://www.npmjs.com/package/node-firestore-import-export)
