@@ -41,6 +41,7 @@ abstract class FireStoreKeys {
   static const String attendeesCollection = 'attendees';
   static const String dateReferenceString = '16032019';
   static const String messageCollection = 'messages';
+  static const String sponsorCollection = 'sponsors';
 }
 
 final GoogleSignIn googleSignIn = GoogleSignIn();

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/caches/user.dart';
+import 'package:flutter_pk/events/sponsor_grid.dart';
 import 'package:flutter_pk/registration/incoming_registrations_page.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
@@ -323,8 +324,7 @@ class EventDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
       children: <Widget>[
         Hero(
           tag: 'banner_${event.id}',
@@ -343,13 +343,27 @@ class EventDetailPage extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              event.description,
-              style: Theme.of(context).textTheme.subhead,
+        Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: ListTile(
+            leading: Icon(
+              Icons.location_on,
+              color: Colors.red,
             ),
+            title: Text(
+              '${event.venue.title}, ${event.venue.address}',
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+              style: Theme.of(context).textTheme.button,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            event.description,
+            style: Theme.of(context).textTheme.subhead,
           ),
         ),
         if (event.isManagedBy(userCache.user.id))
@@ -368,8 +382,21 @@ class EventDetailPage extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-          )
+          ),
+        Divider(),
+        _buildSectionTitle(context, 'Our sponsors'),
+        SponsorGrid(event.id),
       ],
+    );
+  }
+
+  Padding _buildSectionTitle(BuildContext context, String text) {
+    return Padding(
+      padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.headline,
+      ),
     );
   }
 }

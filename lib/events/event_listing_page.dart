@@ -81,6 +81,7 @@ class EventListItem extends StatelessWidget {
           tag: 'banner_${event.id}',
           child: Container(
             decoration: BoxDecoration(
+              color: Theme.of(context).hintColor,
               borderRadius: BorderRadius.circular(4),
               image: DecorationImage(
                 fit: BoxFit.cover,

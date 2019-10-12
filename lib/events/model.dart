@@ -15,6 +15,27 @@ class EventBloc {
           .toList());
 }
 
+class SponsorBloc {
+  Stream<List<Sponsor>> getSponsors(String eventId) => Firestore.instance
+      .collection(
+          '${FireStoreKeys.eventCollection}/$eventId/${FireStoreKeys.sponsorCollection}')
+      .snapshots()
+      .asyncMap<List<Sponsor>>((snapshot) =>
+          snapshot.documents.map((doc) => Sponsor.fromSnapshot(doc)).toList());
+}
+
+class Sponsor {
+  final String id;
+  final String imageUrl;
+  final String name;
+
+  Sponsor.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, id: snapshot.reference.documentID);
+  Sponsor.fromMap(Map map, {this.id})
+      : imageUrl = map['image_url'],
+        name = map['name'];
+}
+
 class EventDetails {
   final DateTime date;
   final String eventTitle;
