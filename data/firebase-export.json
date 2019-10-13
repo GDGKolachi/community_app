@@ -3,21 +3,46 @@
     "attendance": {
       "16032019": {
         "attendanceCount": 0,
-        "__collections__": {
-          "attendees": {}
-        }
+        "__collections__": {}
       }
     },
-    "dates": {
-      "WJqsWCMmpTga6K4sbNz0": {
+    "events": {
+      "gdg_devfest_19": {
+        "volunteers": [],
+        "venue": {
+          "location": {
+            "longitude": 80.123,
+            "latitude": 24.123
+          },
+          "title": "Habib University",
+          "city": "Karachi",
+          "imageUrl": "https://images.pexels.com/photos/2342400/pexels-photo-2342400.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          "address": "123 street"
+        },
+        "bannerUrl": "https://habib.edu.pk/HU-news/wp-content/uploads/2014/02/Front-Facade.jpg",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam justo sem, posuere in nunc ullamcorper, luctus mollis urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed efficitur finibus quam sed bibendum. Quisque blandit mauris metus.",
+        "registrations": {},
+        "eventTitle": "GDG DevFest '19",
+        "organizers": [],
         "date": {
           "__datatype__": "timestamp",
           "value": {
-            "_seconds": 1552676400,
+            "_seconds": 1571079600,
             "_nanoseconds": 0
           }
         },
-        "eventTitle": "Flutter live extended '19",
+        "__collections__": {
+          "messages": {
+            "KO9wQfuJizxmn2zszM5T": {
+              "__collections__": {}
+            }
+          }
+        }
+      },
+      "flutter_study_jam": {
+        "volunteers": [
+          "asadullah.yousuf@10pearls.com"
+        ],
         "venue": {
           "location": {
             "latitude": 24.86369,
@@ -28,7 +53,104 @@
           "imageUrl": "https://pakvocation.com/wp-content/uploads/2017/12/10PEARLS.png",
           "address": "8th floor, Parsa Tower, Main Shahrah-e-Faisal, Karachi"
         },
+        "bannerUrl": "https://images.pexels.com/photos/2342400/pexels-photo-2342400.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam justo sem, posuere in nunc ullamcorper, luctus mollis urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed efficitur finibus quam sed bibendum. Quisque blandit mauris metus.",
+        "registrations": {
+          "user_30@gmail.com": {
+            "email": "user_30@gmail.com",
+            "name": "user_30",
+            "registration": {
+              "occupation": "Professional",
+              "designation": "Designation",
+              "workOrInstitute": "Workplace"
+            },
+            "id": "user_30@gmail.com",
+            "isRegistered": false,
+            "isPresent": false,
+            "mobileNumber": null,
+            "isContributor": false,
+            "status": "SHORTLISTED",
+            "photoUrl": "https://pbs.twimg.com/profile_images/1109696835562676224/aBCxM5b4_400x400.jpg"
+          },
+          "asadullah.yousuf@10pearls.com": {
+            "email": "asadullah.yousuf@10pearls.com",
+            "name": "Asadullah Yousuf",
+            "registration": {
+              "occupation": "Professional",
+              "designation": "Senior Software Architect",
+              "workOrInstitute": "10Pearls"
+            },
+            "id": "asadullah.yousuf@10pearls.com",
+            "isRegistered": true,
+            "isPresent": false,
+            "mobileNumber": "+923452103498",
+            "isContributor": false,
+            "status": "CONFIRMED",
+            "photoUrl": "https://lh3.googleusercontent.com/a-/AAuE7mBnj0Rz-TN73E-6cdY31c0K2hNesi--x-Z2u7jw=s96-c"
+          },
+          "user_25@gmail.com": {
+            "isContributor": false,
+            "status": "SHORTLISTED",
+            "photoUrl": "https://pbs.twimg.com/profile_images/1109696835562676224/aBCxM5b4_400x400.jpg",
+            "email": "user_25@gmail.com",
+            "name": "user_25",
+            "registration": {
+              "occupation": "Professional",
+              "designation": "Designation",
+              "workOrInstitute": "Workplace"
+            },
+            "id": "user_25@gmail.com",
+            "isRegistered": false,
+            "isPresent": false,
+            "mobileNumber": null
+          }
+        },
+        "eventTitle": "Flutter Study Jam",
+        "organizers": [
+          "asadullah.yousuf@10pearls.com"
+        ],
+        "date": {
+          "__datatype__": "timestamp",
+          "value": {
+            "_seconds": 1571425200,
+            "_nanoseconds": 0
+          }
+        },
         "__collections__": {
+          "messages": {
+            "JYcKrcLfeKBHVBMOuz2w": {
+              "user": {
+                "name": "Asadullah",
+                "id": "auby",
+                "photoUrl": "https://pbs.twimg.com/profile_images/1109696835562676224/aBCxM5b4_400x400.jpg"
+              },
+              "text": "quis viverra nibh cras pulvinar mattis nunc sed blandit libero volutpat sed cras ornare arcu dui vivamus arcu felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci nulla pellentesque dignissim enim sit amet venenatis urna cursus eget nunc scelerisque viverra mauris in aliquam",
+              "date": {
+                "__datatype__": "timestamp",
+                "value": {
+                  "_seconds": 1569740400,
+                  "_nanoseconds": 0
+                }
+              },
+              "__collections__": {}
+            },
+            "NBMHu0icJgkSft4qZ6x2": {
+              "user": {
+                "photoUrl": "https://pbs.twimg.com/profile_images/1020387786971668480/bEIfLQyc_400x400.jpg",
+                "name": "Eric Bhatti",
+                "id": "eric"
+              },
+              "text": "tristique magna sit amet purus gravida quis blandit turpis cursus in hac habitasse platea dictumst quisque sagittis purus sit amet volutpat consequat mauris nunc congue nisi vitae suscipit tellus mauris a diam maecenas sed enim ut sem viverra aliquet eget sit amet tellus cras adipiscing enim eu turpis egestas pretium",
+              "date": {
+                "__datatype__": "timestamp",
+                "value": {
+                  "_seconds": 1569744000,
+                  "_nanoseconds": 0
+                }
+              },
+              "__collections__": {}
+            }
+          },
           "sessions": {
             "Q2a930CWsxrTU3aXjBbK": {
               "id": "pairCode",
@@ -84,15 +206,6 @@
               "__collections__": {}
             },
             "ZmOtQvgTqbbpcq0OsT3z": {
-              "endDateTime": {
-                "__datatype__": "timestamp",
-                "value": {
-                  "_seconds": 1552735800,
-                  "_nanoseconds": 0
-                }
-              },
-              "color": "brown",
-              "description": "Live code a UI on Flutter. UI challenge will be given and the attendees will be coding the UI then and there!",
               "textColor": "white",
               "id": "uiChallenge",
               "speakers": [
@@ -108,6 +221,15 @@
               },
               "speakerId": "waleed",
               "title": "Flutter UI challenge",
+              "endDateTime": {
+                "__datatype__": "timestamp",
+                "value": {
+                  "_seconds": 1552735800,
+                  "_nanoseconds": 0
+                }
+              },
+              "color": "brown",
+              "description": "Live code a UI on Flutter. UI challenge will be given and the attendees will be coding the UI then and there!",
               "__collections__": {}
             },
             "jjerkNAOg54TZErlH91p": {
@@ -132,6 +254,7 @@
               "__collections__": {}
             },
             "vsTQp4eUDeEMdlYhH6hz": {
+              "id": "cicd",
               "speakers": [
                 "waheeda",
                 "hussain"
@@ -155,10 +278,10 @@
               "color": "lightBlue",
               "description": "An introduction and hands on, on how Codemagic helps flutter developers achieve continuous integration and continuous delivery.",
               "textColor": "white",
-              "id": "cicd",
               "__collections__": {}
             },
             "y9bKNPQoYIxt3zRB31PZ": {
+              "textColor": "white",
               "id": "end",
               "speakers": [
                 "auby"
@@ -181,10 +304,19 @@
               },
               "color": "indigoAccent",
               "description": "Some valuable announcements and updates about the next events.",
-              "textColor": "white",
               "__collections__": {}
             },
             "yvAhvc07yrZwjIX9pIdK": {
+              "title": "Keynote - introduction",
+              "endDateTime": {
+                "__datatype__": "timestamp",
+                "value": {
+                  "_seconds": 1552714200,
+                  "_nanoseconds": 0
+                }
+              },
+              "color": "green",
+              "description": "Learn about the latest product and platform innovations at Flutter Live Extended Keynote led by Asadullah Bin Yousuf.",
               "textColor": "white",
               "id": "keynote",
               "speakers": [
@@ -198,16 +330,26 @@
                 }
               },
               "speakerId": "auby",
-              "title": "Keynote - introduction",
-              "endDateTime": {
-                "__datatype__": "timestamp",
-                "value": {
-                  "_seconds": 1552714200,
-                  "_nanoseconds": 0
-                }
-              },
-              "color": "green",
-              "description": "Learn about the latest product and platform innovations at Flutter Live Extended Keynote led by Asadullah Bin Yousuf.",
+              "__collections__": {}
+            }
+          },
+          "sponsors": {
+            "google": {
+              "name": "Google",
+              "type": "GOLD",
+              "image_url": "https://cdn.vox-cdn.com/thumbor/enxnOqE-XiOwpe2qYXmRVftWF_Q=/0x0:640x427/1200x800/filters:focal(0x0:640x427)/cdn.vox-cdn.com/assets/3186259/googlogo.jpg",
+              "__collections__": {}
+            },
+            "nest_io": {
+              "name": "Nest I/O",
+              "type": "GOLD",
+              "image_url": "http://thenestio.com/wp-content/uploads/2015/03/the-nest-io-700x350.jpg",
+              "__collections__": {}
+            },
+            "ten_pearls": {
+              "name": "10Pearls",
+              "type": "VENUE",
+              "image_url": "https://static2.clutch.co/s3fs-public/logos/10pearlslogo_square.png",
               "__collections__": {}
             }
           }
@@ -228,15 +370,15 @@
         "__collections__": {}
       },
       "sana": {
-        "description": "Sana Zehra is a software engineer involved in designing and development of software products. She is a lifelong learner and a technology enthusiast; with her experience in various back end technologies and cloud platform, she is involved in developing payment processing products at TPS Pakistan.",
         "photoUrl": "https://media.licdn.com/dms/image/C4D03AQHl0iIo5VYg5Q/profile-displayphoto-shrink_800_800/0?e=1556755200&v=beta&t=rkFpZZyQmw1IhM_g5Weu_wl9f3mnwTW2YAo_cTyZU3k",
         "name": "Sana Zehra",
+        "description": "Sana Zehra is a software engineer involved in designing and development of software products. She is a lifelong learner and a technology enthusiast; with her experience in various back end technologies and cloud platform, she is involved in developing payment processing products at TPS Pakistan.",
         "__collections__": {}
       },
       "taha": {
-        "description": "Taha develops leading edge digital financial services based mobile applications at TPS Pakistan. He is a technology enthusiast, has good taste in design and loves problem solving. At present he is beginning to give back to community.",
         "photoUrl": "https://farm8.staticflickr.com/7882/46360905165_91bfebb04a_m.jpg",
         "name": "Syed Taha Ali",
+        "description": "Taha develops leading edge digital financial services based mobile applications at TPS Pakistan. He is a technology enthusiast, has good taste in design and loves problem solving. At present he is beginning to give back to community.",
         "__collections__": {}
       },
       "waheeda": {
@@ -252,6 +394,23 @@
         "__collections__": {}
       }
     },
-    "users": {}
+    "users": {
+      "asadullah.yousuf@10pearls.com": {
+        "email": "asadullah.yousuf@10pearls.com",
+        "name": "Asadullah Yousuf",
+        "registration": {
+          "occupation": "Professional",
+          "designation": "Senior Software Architect",
+          "workOrInstitute": "10Pearls"
+        },
+        "id": "asadullah.yousuf@10pearls.com",
+        "isRegistered": true,
+        "isPresent": false,
+        "mobileNumber": "+923452103498",
+        "isContributor": false,
+        "photoUrl": "https://lh3.googleusercontent.com/a-/AAuE7mBnj0Rz-TN73E-6cdY31c0K2hNesi--x-Z2u7jw=s96-c",
+        "__collections__": {}
+      }
+    }
   }
 }

@@ -13,7 +13,10 @@
     		<array>
     			<!-- TODO Replace this value: -->
     			<!-- Copied from GoogleServices-Info.plist key REVERSED_CLIENT_ID -->
-    			<string>com.googleusercontent.apps.793569125368-0bn1vj0u44ktjtvd3v2flp9u738id11o</string>
+    			<!-- DEV -->
+					<string>com.googleusercontent.apps.9374441145-37lq3r1j7ch694tnmenjk61k6gvp41m0</string>
+    			<!-- PROD -->
+					<!-- <string>com.googleusercontent.apps.793569125368-0bn1vj0u44ktjtvd3v2flp9u738id11o</string> -->
     		</array>
     	</dict>
     </array>
