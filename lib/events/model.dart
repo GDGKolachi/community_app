@@ -47,6 +47,7 @@ class EventDetails {
   final String description;
   final List<String> volunteers;
   final List<String> organizers;
+  final bool isRegistrationOpen;
 
   EventDetails({
     this.eventTitle,
@@ -59,6 +60,7 @@ class EventDetails {
     this.registrations,
     this.volunteers,
     this.organizers,
+    this.isRegistrationOpen,
   });
 
   String get formattedDate => formatDate(
@@ -78,7 +80,8 @@ class EventDetails {
         venue = Venue.fromMap(map['venue']),
         description = map['description'],
         volunteers = List<String>.from(map['volunteers']),
-        organizers = List<String>.from(map['organizers']);
+        organizers = List<String>.from(map['organizers']),
+        isRegistrationOpen = map['is_registration_open'] ?? false;
 
   static String _findRegistrationStatus(Map registrations) =>
       registrations != null && registrations[userCache.user.id] != null

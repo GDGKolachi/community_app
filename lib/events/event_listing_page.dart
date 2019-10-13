@@ -4,6 +4,7 @@ import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/profile/profile_dialog.dart';
+import 'package:flutter_pk/registration/model.dart';
 import 'package:flutter_pk/registration/registration_action.dart';
 import 'package:flutter_pk/theme.dart';
 import 'package:flutter_pk/util.dart';
@@ -73,6 +74,34 @@ class EventListItem extends StatelessWidget {
       style: eventDateStyle,
     );
 
+    var userRegistrationStatus = event.registrationStatus.toUpperCase();
+    userRegistrationStatus =
+        userRegistrationStatus == RegistrationStates.undefined
+            ? 'UNREGISTERED'
+            : userRegistrationStatus;
+
+    var registrationStatusBadge = Align(
+      alignment: Alignment.topRight,
+      child: Card(
+        margin: EdgeInsets.only(top: 16),
+        color: Colors.green,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(kCardBorderRadius * 2),
+            bottomLeft: Radius.circular(kCardBorderRadius * 2),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+          child: Text(
+            userRegistrationStatus,
+            style: Theme.of(context).accentTextTheme.button,
+          ),
+        ),
+      ),
+    );
+
     var card = Expanded(
       child: Card(
         child: Column(
@@ -92,12 +121,14 @@ class EventListItem extends StatelessWidget {
                     image: NetworkImage(event.bannerUrl),
                   ),
                 ),
+                child: registrationStatusBadge,
               ),
             ),
             ListTile(
               title: Text(event.eventTitle),
               subtitle: Text('${event.venue.title}, ${event.venue.city}'),
-              trailing: RegistrationAction(event),
+              trailing:
+                  event.isRegistrationOpen ? RegistrationAction(event) : null,
             ),
           ],
         ),
