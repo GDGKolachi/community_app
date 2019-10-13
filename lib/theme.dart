@@ -17,6 +17,7 @@ abstract class ColorDictionary {
   };
 }
 
+const double kCardBorderRadius = 8;
 const Color kBlue = Colors.blue;
 final theme = _buildTheme();
 
@@ -41,6 +42,10 @@ ThemeData _buildTheme() {
           color: Colors.black,
         ),
       ),
+    ),
+    cardTheme: base.cardTheme.copyWith(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kCardBorderRadius)),
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
