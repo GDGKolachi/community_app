@@ -5,6 +5,8 @@ import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/profile/profile_dialog.dart';
 import 'package:flutter_pk/registration/registration_action.dart';
+import 'package:flutter_pk/theme.dart';
+import 'package:flutter_pk/util.dart';
 import 'package:flutter_pk/widgets/animated_progress_indicator.dart';
 import 'package:flutter_pk/widgets/navigation_drawer.dart';
 
@@ -58,56 +60,66 @@ class EventListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var eventTitleStyle = Theme.of(context).accentTextTheme.title;
-    var eventLocationStyle = Theme.of(context).accentTextTheme.subtitle;
+    var imageHeight = calculateImageHeight(
+      MediaQuery.of(context).size.width - 88,
+    );
+
     var eventDateStyle =
         Theme.of(context).textTheme.title.copyWith(color: Colors.black45);
-    var space = SizedBox(height: 8);
 
-    return ListTile(
+    var date = Text(
+      formatDate(event.date, 'MMM\ndd').toUpperCase(),
+      textAlign: TextAlign.center,
+      style: eventDateStyle,
+    );
+
+    var card = Expanded(
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Hero(
+              tag: 'banner_${event.id}',
+              child: Container(
+                height: imageHeight,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).hintColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(kCardBorderRadius),
+                      topRight: Radius.circular(kCardBorderRadius)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(event.bannerUrl),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(event.eventTitle),
+              subtitle: Text('${event.venue.title}, ${event.venue.city}'),
+              trailing: RegistrationAction(event),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    return InkWell(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => EventDetailContainer(event),
         ),
       ),
-      leading: Text(
-        formatDate(event.date, 'MMM\ndd').toUpperCase(),
-        textAlign: TextAlign.center,
-        style: eventDateStyle,
-      ),
-      title: Card(
-        child: Hero(
-          tag: 'banner_${event.id}',
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).hintColor,
-              borderRadius: BorderRadius.circular(4),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
-                image: NetworkImage(event.bannerUrl),
-              ),
-            ),
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 56, bottom: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  event.eventTitle,
-                  style: eventTitleStyle,
-                ),
-                space,
-                Text(
-                  '${event.venue.title}, ${event.venue.city}',
-                  style: eventLocationStyle,
-                ),
-                space,
-                RegistrationAction(event),
-              ],
-            ),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            date,
+            SizedBox(width: 16),
+            card,
+          ],
         ),
       ),
     );

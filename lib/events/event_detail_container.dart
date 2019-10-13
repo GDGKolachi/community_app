@@ -11,6 +11,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
 import 'package:flutter_pk/messages/messages_board.dart';
 import 'package:flutter_pk/registration/registration.dart';
+import 'package:flutter_pk/util.dart';
 import 'package:flutter_pk/widgets/two_line_title_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -324,6 +325,10 @@ class EventDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var imageHeight = calculateImageHeight(
+      MediaQuery.of(context).size.width,
+    );
+
     return ListView(
       children: <Widget>[
         Hero(
@@ -333,19 +338,16 @@ class EventDetailPage extends StatelessWidget {
           /// so using the same widget hierarchy to let the hero
           /// animation run properly.
           child: Container(
-            height: 240,
+            height: imageHeight,
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
                 image: NetworkImage(event.bannerUrl),
               ),
             ),
           ),
         ),
         Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           child: ListTile(
             leading: Icon(
               Icons.location_on,

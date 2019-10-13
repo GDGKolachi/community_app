@@ -12,10 +12,10 @@ typedef void RegistrationCallback(
 class RegistrationAction extends StatelessWidget {
   static Map<String, String> _buttonTextMap = {
     RegistrationStates.undefined: 'REGISTER',
-    RegistrationStates.registered: 'SHORTLISTING PENDING',
-    RegistrationStates.shortlisted: 'CONFIRM REGISTRATION',
+    RegistrationStates.registered: 'PENDING',
+    RegistrationStates.shortlisted: 'CONFIRM',
     RegistrationStates.cancelled: 'RE-APPLY',
-    RegistrationStates.confirmed: 'VIEW EVENT',
+    RegistrationStates.confirmed: 'VIEW',
   };
 
   static Map<String, RegistrationCallback> _buttonActionMap = {
@@ -36,7 +36,7 @@ class RegistrationAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return OutlineButton(
       child: Text(_text),
       shape: StadiumBorder(),
       onPressed: () => _onTap(context, event, userCache.user),
