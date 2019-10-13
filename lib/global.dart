@@ -34,7 +34,7 @@ abstract class SharedPreferencesKeys {
 
 abstract class FireStoreKeys {
   static const String userCollection = 'users';
-  static const String eventCollection = 'dates';
+  static const String eventCollection = 'events';
   static const String sessionCollection = 'sessions';
   static const String speakerCollection = 'speakers';
   static const String attendanceCollection = 'attendance';
