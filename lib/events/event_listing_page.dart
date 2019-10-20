@@ -121,14 +121,14 @@ class EventListItem extends StatelessWidget {
                     image: NetworkImage(event.bannerUrl),
                   ),
                 ),
-                child: registrationStatusBadge,
+                child: FeatureFlags.eventRegistration ? registrationStatusBadge :  null,
               ),
             ),
             ListTile(
               title: Text(event.eventTitle),
               subtitle: Text('${event.venue.title}, ${event.venue.city}'),
               trailing:
-                  event.isRegistrationOpen ? RegistrationAction(event) : null,
+                  FeatureFlags.eventRegistration && event.isRegistrationOpen ? RegistrationAction(event) : null,
             ),
           ],
         ),

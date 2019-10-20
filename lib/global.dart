@@ -6,7 +6,9 @@ import 'package:flutter_pk/caches/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+abstract class FeatureFlags {
+  static const bool eventRegistration = false;
+}
 abstract class SplashScreenConfig {
   static const String logoAssetName = 'assets/gdg_kolachi.png';
   static const Color backgroundColor = Colors.white;
