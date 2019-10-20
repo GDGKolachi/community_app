@@ -22,22 +22,35 @@ class SchedulePageState extends State<SchedulePage>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Session>>(
-      stream: bloc.getSessions(widget.eventId),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return AnimatedProgressIndicator();
-        }
+    return Column(
+      children: <Widget>[
+        /// Have to add this hero tag to avoid a glitch which
+        /// prevents hero child to appear properly when navigated
+        /// back to event listing page
+        Hero(
+          tag: 'banner_${widget.eventId}',
+          child: Container(),
+        ),
+        Expanded(
+          child: StreamBuilder<List<Session>>(
+            stream: bloc.getSessions(widget.eventId),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return AnimatedProgressIndicator();
+              }
 
-        var sessions = snapshot.data;
-        return ListView.builder(
-          itemCount: sessions.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildListItem(context, sessions[index]);
-          },
-          padding: const EdgeInsets.only(top: 20.0),
-        );
-      },
+              var sessions = snapshot.data;
+              return ListView.builder(
+                itemCount: sessions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildListItem(context, sessions[index]);
+                },
+                padding: const EdgeInsets.only(top: 20.0),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
