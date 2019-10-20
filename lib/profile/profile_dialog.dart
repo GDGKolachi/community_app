@@ -1,12 +1,47 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pk/caches/user.dart';
-import 'package:flutter_pk/contribution/contribution_dialog.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/shared_preferences.dart';
+import 'package:flutter_pk/profile/model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+void signOut(BuildContext context) async {
+  try {
+    await googleSignIn.signOut();
+    await auth.signOut();
+
+    SharedPreferencesHandler().clearPreferences();
+    userCache.clear();
+
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      Routes.main,
+      ModalRoute.withName(Routes.home),
+    );
+  } catch (ex) {
+    print(ex);
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: "Oops!",
+      desc: "An error has occurred",
+      buttons: [
+        DialogButton(
+          child: Text("DISMISS",
+              style: Theme.of(context).textTheme.title.copyWith(
+                    color: Colors.white,
+                  )),
+          color: Colors.red,
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    ).show();
+  }
+}
 
 class FullScreenProfileDialog extends StatefulWidget {
   static MaterialPageRoute get route => MaterialPageRoute(
@@ -22,12 +57,10 @@ class FullScreenProfileDialog extends StatefulWidget {
 
 class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
   User _user;
-  SharedPreferencesHandler preferences;
 
   @override
   void initState() {
     super.initState();
-    preferences = SharedPreferencesHandler();
     _setUser();
   }
 
@@ -39,7 +72,7 @@ class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
         actions: <Widget>[
           FlatButton(
             child: Text('SIGN OUT'),
-            onPressed: _signOut,
+            onPressed: () => signOut(context),
           ),
         ],
       ),
@@ -52,40 +85,6 @@ class FullScreenProfileDialogState extends State<FullScreenProfileDialog> {
         ),
       ),
     );
-  }
-
-  void _signOut() async {
-    try {
-      await googleSignIn.signOut();
-      await auth.signOut();
-      preferences.clearPreferences();
-      userCache.clear();
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        Routes.main,
-        ModalRoute.withName(Routes.home),
-      );
-    } catch (ex) {
-      print(ex);
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Oops!",
-        desc: "An error has occurred",
-        buttons: [
-          DialogButton(
-            child: Text("DISMISS",
-                style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white,
-                    )),
-            color: Colors.red,
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ).show();
-    }
   }
 
   Widget _buildBody() {

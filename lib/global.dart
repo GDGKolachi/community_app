@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pk/caches/EventDate.dart';
 import 'package:flutter_pk/caches/location.dart';
-import 'package:flutter_pk/caches/user.dart';
+import 'package:flutter_pk/caches/user_cache.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

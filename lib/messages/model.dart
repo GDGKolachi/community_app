@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/formatters.dart';
+import 'package:flutter_pk/profile/model.dart';
 
 class MessageBloc {
   Stream<List<Message>> getMessages(String eventId) => Firestore.instance

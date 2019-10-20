@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/events/model.dart';
+import 'package:flutter_pk/profile/model.dart';
 import 'package:flutter_pk/registration/model.dart';
 import 'package:flutter_pk/widgets/empty_list_message.dart';
 import 'package:flutter_pk/widgets/two_line_title_app_bar.dart';

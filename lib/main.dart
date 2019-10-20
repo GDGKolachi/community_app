@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_pk/events/event_listing_page.dart';
 import 'package:flutter_pk/events/onboarding.dart';
 import 'package:flutter_pk/global.dart';
+import 'package:flutter_pk/profile/model.dart';
 import 'package:flutter_pk/registration/model.dart';
 import 'package:flutter_pk/registration/registration.dart';
 import 'package:flutter_pk/theme.dart';
-
-import 'caches/user.dart';
 
 void main() => runApp(CommunityApp());
 

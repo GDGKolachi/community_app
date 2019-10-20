@@ -33,6 +33,7 @@ class NavigationDrawerItems extends StatelessWidget {
           context,
           Icons.exit_to_app,
           'Log out',
+          onTap: () => signOut(context),
         ),
       ],
     );

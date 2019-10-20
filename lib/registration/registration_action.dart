@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/events/event_detail_container.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';
+import 'package:flutter_pk/profile/model.dart';
 import 'package:flutter_pk/registration/model.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 

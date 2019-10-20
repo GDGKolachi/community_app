@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/events/sponsor_grid.dart';
+import 'package:flutter_pk/profile/model.dart';
 import 'package:flutter_pk/registration/incoming_registrations_page.dart';
 import 'package:flutter_pk/events/model.dart';
 import 'package:flutter_pk/global.dart';

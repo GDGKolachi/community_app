@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_pk/caches/user.dart';
 import 'package:flutter_pk/global.dart';
+import 'package:flutter_pk/profile/model.dart';
 
 class RegistrationService {
   Future updateStatus(String eventId, User user, String status) async {
