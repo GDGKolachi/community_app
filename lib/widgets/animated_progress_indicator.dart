@@ -13,7 +13,7 @@ class AnimatedProgressIndicator extends StatelessWidget {
         child: SizedBox(
           height: 40.0,
           width: 40.0,
-          child: Image(image: AssetImage('assets/loader.png')),
+          child: Image(image: AssetImage('assets/ic_gdg_app.png')),
         ),
       ),
     );
