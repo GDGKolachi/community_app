@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pk/feedback/feedback.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/schedule/model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_pk/theme.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -237,7 +237,7 @@ class SessionDetailPage extends StatelessWidget {
                   decoration: new BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(
+                      image: NetworkImage(
                         speaker.photoUrl,
                       ),
                     ),

@@ -22,12 +22,12 @@ dependencies:
   intl: '^0.15.4'
   rounded_modal: ^1.0.0
   progress_indicators: ^0.1.2
-  google_sign_in: ^3.2.4
-  cached_network_image: ^1.1.1
+  google_sign_in: ^4.1.1
+  # cached_network_image: 2.0.0-rc
   rflutter_alert: ^1.0.2
   shared_preferences: ^0.4.3
   smooth_star_rating: 1.0.1
-  barcode_scan: ^0.0.7
+  barcode_scan: ^1.0.0
   google_maps_flutter: ^0.2.0+3
   url_launcher: ^5.0.1
   qr_flutter: ^3.0.1

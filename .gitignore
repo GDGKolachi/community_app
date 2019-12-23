@@ -73,3 +73,5 @@ build/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 data/*firebase-credentials.json
+lib/generated/i18n.dart
+.flutter-plugins-dependencies
