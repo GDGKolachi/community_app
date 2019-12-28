@@ -54,7 +54,7 @@ class User {
         "mobileNumber": mobileNumber,
         "isPresent": isPresent,
         "isContributor": isContributor,
-        "registration": occupation.toJson(),
+        "registration": occupation?.toJson(),
       };
 
   User.fromSnapshot(DocumentSnapshot snapshot)
