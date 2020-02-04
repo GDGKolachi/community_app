@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class FeatureFlags {
   static const bool eventRegistration = false;
 }
+
 abstract class SplashScreenConfig {
   static const String logoAssetName = 'assets/gdg_kolachi.png';
   static const Color backgroundColor = Colors.white;
@@ -23,7 +24,8 @@ abstract class GlobalConstants {
   static const int phoneNumberMaxLength = 13;
   static const String breakId = 'break';
   static const int entryMaxLength = 50;
-  static const String qrKey = "thisisahighlyencryptedaubykhanstringthatisbeingusedforfluttermeetupqrscan";
+  static const String qrKey =
+      "thisisahighlyencryptedaubykhanstringthatisbeingusedforfluttermeetupqrscan";
   static const String addNumberDisplayText =
       'Add your phone number in order to receive event updates.';
   static const String editNumberDisplayText =
@@ -56,3 +58,10 @@ UserCache userCache = new UserCache();
 LocationCache locationCache = new LocationCache();
 
 EventDateTimeCache eventDateTimeCache = new EventDateTimeCache();
+
+Map remoteCofigDefaults = <String, dynamic>{
+  'android_force_update_version': '4.0',
+  'ios_force_update_version': '6.0',
+  'play_store_url':'https://play.google.com/store/apps/details?id=com.ea.game.nfs14_row&hl=en',
+  'app_store_url':'https://apps.apple.com/us/app/call-of-duty-mobile/id1287282214'
+};
