@@ -224,6 +224,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   _showForceUpdateAlert(String hostPlatform) {
     Alert(
+      style: AlertStyle(isOverlayTapDismiss: false,isCloseButton: false),
       context: context,
       type: AlertType.error,
       title: "You must update your app to continue",
