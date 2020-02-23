@@ -59,8 +59,8 @@ LocationCache locationCache = new LocationCache();
 
 EventDateTimeCache eventDateTimeCache = new EventDateTimeCache();
 
-Map remoteCofigDefaults = <String, dynamic>{
-  'android_force_update_version': '4.0',
+Map remoteConfigDefaults = <String, dynamic>{
+  'android_force_update_version': '1.0',
   'ios_force_update_version': '6.0',
   'play_store_url':'https://play.google.com/store/apps/details?id=com.ea.game.nfs14_row&hl=en',
   'app_store_url':'https://apps.apple.com/us/app/call-of-duty-mobile/id1287282214'

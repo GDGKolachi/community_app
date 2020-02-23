@@ -27,11 +27,9 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   bool _isLoading = false;
-  bool _isForceUpdateRequired = false;
   bool _showSwipeText = false;
   bool _isFetchingSharedPreferences = false;
   SharedPreferencesHandler preferences;
-
   LoginService service = LoginService();
 
   @override
@@ -46,16 +44,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void _isAppUpdateRequired() async {
     setState(() => _isLoading = true);
     try {
+      RemoteConfigInitializer configInitializer = new RemoteConfigInitializer();
+      var configData = await configInitializer.setupRemoteConfig();
+
+      RemoteConfigHelper configDataHelper =
+          new RemoteConfigHelper(remoteConfig: configData);
+
       var hostPlatform = Platform.isAndroid ? "android" : "ios";
-      var forceVersion = await getApplicationConfiguration(
-          hostPlatform + '_force_update_version');
+      var forceVersion = await configDataHelper
+          .getApplicationConfiguration(hostPlatform + '_force_update_version');
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       String appVersion = packageInfo.version.substring(0, 2);
       if (double.parse(appVersion) < double.parse(forceVersion)) {
-        setState(() {
-          _isForceUpdateRequired = true;
-        });
-        _showForceUpdateAlert(hostPlatform);
+        _showForceUpdateAlert(hostPlatform, configDataHelper);
       }
     } catch (ex) {
       _showGeneralErrorAlert();
@@ -222,7 +223,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     }
   }
 
-  _showForceUpdateAlert(String hostPlatform) {
+  _showForceUpdateAlert(String hostPlatform, RemoteConfigHelper configHelper) {
     Alert(
       context: context,
       type: AlertType.error,
@@ -248,7 +249,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           onPressed: () async {
             var launchUrlKey =
                 hostPlatform == "android" ? 'play_store_url' : 'app_store_url';
-            var url = await getApplicationConfiguration(launchUrlKey);
+            var url =
+                await configHelper.getApplicationConfiguration(launchUrlKey);
             _launchURL(url);
           },
         )
