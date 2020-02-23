@@ -41,52 +41,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
     _getSharedPreferences();
   }
 
-  void _isAppUpdateRequired() async {
-    setState(() => _isLoading = true);
-    try {
-      RemoteConfigInitializer configInitializer = new RemoteConfigInitializer();
-      var configData = await configInitializer.setupRemoteConfig();
-
-      RemoteConfigHelper configDataHelper =
-          new RemoteConfigHelper(remoteConfig: configData);
-
-      var hostPlatform = Platform.isAndroid ? "android" : "ios";
-      var forceVersion = await configDataHelper
-          .getApplicationConfiguration(hostPlatform + '_force_update_version');
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      String appVersion = packageInfo.version.substring(0, 2);
-      if (double.parse(appVersion) < double.parse(forceVersion)) {
-        _showForceUpdateAlert(hostPlatform, configDataHelper);
-      }
-    } catch (ex) {
-      _showGeneralErrorAlert();
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  void _getSharedPreferences() async {
-    setState(() => _isFetchingSharedPreferences = true);
-    try {
-      var userId =
-          await preferences.getValue(SharedPreferencesKeys.firebaseUserId);
-      if (userId != null) {
-        await userCache.getUser(userId);
-        await Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home,
-          ModalRoute.withName(Routes.main),
-        );
-      }
-    } catch (ex) {
-      _showGeneralErrorAlert();
-    } finally {
-      setState(() {
-        _isFetchingSharedPreferences = false;
-        _showSwipeText = true;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -215,16 +169,55 @@ class _OnboardingPageState extends State<OnboardingPage> {
     }
   }
 
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+  void _isAppUpdateRequired() async {
+    setState(() => _isLoading = true);
+    try {
+      RemoteConfigInitializer configInitializer = new RemoteConfigInitializer();
+      var configData = await configInitializer.setupRemoteConfig();
+
+      RemoteConfigHelper configDataHelper =
+          new RemoteConfigHelper(remoteConfig: configData);
+
+      var hostPlatform = Platform.isAndroid ? "android" : "ios";
+      var forceVersion = await configDataHelper
+          .getApplicationConfiguration(hostPlatform + '_force_update_version');
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String appVersion = packageInfo.version.substring(0, 2);
+      if (double.parse(appVersion) < double.parse(forceVersion)) {
+        _showForceUpdateAlert(hostPlatform, configDataHelper);
+      }
+    } catch (ex) {
+      _showGeneralErrorAlert();
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _getSharedPreferences() async {
+    setState(() => _isFetchingSharedPreferences = true);
+    try {
+      var userId =
+          await preferences.getValue(SharedPreferencesKeys.firebaseUserId);
+      if (userId != null) {
+        await userCache.getUser(userId);
+        await Navigator.of(context).pushNamedAndRemoveUntil(
+          Routes.home,
+          ModalRoute.withName(Routes.main),
+        );
+      }
+    } catch (ex) {
+      _showGeneralErrorAlert();
+    } finally {
+      setState(() {
+        _isFetchingSharedPreferences = false;
+        _showSwipeText = true;
+      });
     }
   }
 
   _showForceUpdateAlert(String hostPlatform, RemoteConfigHelper configHelper) {
     Alert(
+      style: AlertStyle(isOverlayTapDismiss: false, isCloseButton: false),
       context: context,
       type: AlertType.error,
       title: "You must update your app to continue",
@@ -277,5 +270,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
         )
       ],
     ).show();
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
