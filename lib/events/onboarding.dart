@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pk/helpers/remote-config.dart';
 import 'package:flutter_pk/profile/login.dart';
 import 'package:flutter_pk/global.dart';
 import 'package:flutter_pk/helpers/shared_preferences.dart';
@@ -8,6 +9,9 @@ import 'package:flutter_pk/widgets/sprung_box.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sprung/sprung.dart';
+import 'dart:io' show Platform, exit;
+import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPage extends StatefulWidget {
   OnboardingPage({
@@ -26,55 +30,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
   bool _showSwipeText = false;
   bool _isFetchingSharedPreferences = false;
   SharedPreferencesHandler preferences;
-
   LoginService service = LoginService();
 
   @override
   void initState() {
     super.initState();
     service.initialize();
+    _isAppUpdateRequired();
     preferences = SharedPreferencesHandler();
     _getSharedPreferences();
-  }
-
-  void _getSharedPreferences() async {
-    setState(() => _isFetchingSharedPreferences = true);
-    try {
-      var userId =
-          await preferences.getValue(SharedPreferencesKeys.firebaseUserId);
-      if (userId != null) {
-        await userCache.getUser(userId);
-        await Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home,
-          ModalRoute.withName(Routes.main),
-        );
-      }
-    } catch (ex) {
-      print(ex);
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Oops!",
-        desc: "An error has occurred",
-        buttons: [
-          DialogButton(
-            child: Text("DISMISS",
-                style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white,
-                    )),
-            color: Colors.red,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ).show();
-    } finally {
-      setState(() {
-        _isFetchingSharedPreferences = false;
-        _showSwipeText = true;
-      });
-    }
   }
 
   @override
@@ -199,27 +163,120 @@ class _OnboardingPageState extends State<OnboardingPage> {
       //   ModalRoute.withName(Routes.main),
       // );
     } catch (ex) {
-      print(ex);
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Oops!",
-        desc: "An error has occurred",
-        buttons: [
-          DialogButton(
-            child: Text("DISMISS",
-                style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white,
-                    )),
-            color: Colors.red,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ).show();
+      _showGeneralErrorAlert();
     } finally {
       setState(() => _isLoading = false);
+    }
+  }
+
+  void _isAppUpdateRequired() async {
+    setState(() => _isLoading = true);
+    try {
+      RemoteConfigInitializer configInitializer = new RemoteConfigInitializer();
+      var configData = await configInitializer.setupRemoteConfig();
+
+      RemoteConfigHelper configDataHelper =
+          new RemoteConfigHelper(remoteConfig: configData);
+
+      var hostPlatform = Platform.isAndroid ? "android" : "ios";
+      var forceVersion = await configDataHelper
+          .getApplicationConfiguration(hostPlatform + '_force_update_version');
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String appVersion = packageInfo.version.substring(0, 2);
+      if (double.parse(appVersion) < double.parse(forceVersion)) {
+        _showForceUpdateAlert(hostPlatform, configDataHelper);
+      }
+    } catch (ex) {
+      _showGeneralErrorAlert();
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _getSharedPreferences() async {
+    setState(() => _isFetchingSharedPreferences = true);
+    try {
+      var userId =
+          await preferences.getValue(SharedPreferencesKeys.firebaseUserId);
+      if (userId != null) {
+        await userCache.getUser(userId);
+        await Navigator.of(context).pushNamedAndRemoveUntil(
+          Routes.home,
+          ModalRoute.withName(Routes.main),
+        );
+      }
+    } catch (ex) {
+      _showGeneralErrorAlert();
+    } finally {
+      setState(() {
+        _isFetchingSharedPreferences = false;
+        _showSwipeText = true;
+      });
+    }
+  }
+
+  _showForceUpdateAlert(String hostPlatform, RemoteConfigHelper configHelper) {
+    Alert(
+      style: AlertStyle(isOverlayTapDismiss: false, isCloseButton: false),
+      context: context,
+      type: AlertType.error,
+      title: "You must update your app to continue",
+      desc: "",
+      buttons: [
+        DialogButton(
+          child: Text("DISMISS",
+              style: Theme.of(context).textTheme.title.copyWith(
+                    color: Colors.white,
+                  )),
+          color: Colors.red,
+          onPressed: () {
+            exit(0);
+          },
+        ),
+        DialogButton(
+          child: Text("UPDATE NOW",
+              style: Theme.of(context).textTheme.title.copyWith(
+                    color: Colors.white,
+                  )),
+          color: Colors.green,
+          onPressed: () async {
+            var launchUrlKey =
+                hostPlatform == "android" ? 'play_store_url' : 'app_store_url';
+            var url =
+                await configHelper.getApplicationConfiguration(launchUrlKey);
+            _launchURL(url);
+          },
+        )
+      ],
+    ).show();
+  }
+
+  _showGeneralErrorAlert() {
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: "Oops!",
+      desc: "An error has occurred",
+      buttons: [
+        DialogButton(
+          child: Text("DISMISS",
+              style: Theme.of(context).textTheme.title.copyWith(
+                    color: Colors.white,
+                  )),
+          color: Colors.red,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    ).show();
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 }
